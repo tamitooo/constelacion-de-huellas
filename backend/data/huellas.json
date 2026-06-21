@@ -1,0 +1,268 @@
+[
+  {
+    "id": 1,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Familia",
+    "color": "#FFD700",
+    "tamano": 2,
+    "fecha": "2026-06-21T20:57:05.054Z"
+  },
+  {
+    "id": 2,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Familia",
+    "color": "#FFD700",
+    "tamano": 2,
+    "fecha": "2026-06-21T20:57:12.817Z"
+  },
+  {
+    "id": 3,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Crecimiento Personal",
+    "color": "#7CFC00",
+    "tamano": 2,
+    "fecha": "2026-06-21T21:10:22.342Z"
+  },
+  {
+    "id": 4,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Crecimiento Personal",
+    "color": "#7CFC00",
+    "tamano": 2,
+    "fecha": "2026-06-21T21:11:11.728Z"
+  },
+  {
+    "id": 5,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Crecimiento Personal",
+    "color": "#7CFC00",
+    "tamano": 2,
+    "fecha": "2026-06-21T21:12:29.193Z"
+  },
+  {
+    "id": 6,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Crecimiento Personal",
+    "color": "#7CFC00",
+    "tamano": 2,
+    "fecha": "2026-06-21T21:13:13.720Z"
+  },
+  {
+    "id": 7,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Crecimiento Personal",
+    "color": "#7CFC00",
+    "tamano": 2,
+    "fecha": "2026-06-21T21:17:26.174Z"
+  },
+  {
+    "id": 8,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Crecimiento Personal",
+    "color": "#7CFC00",
+    "tamano": 2,
+    "fecha": "2026-06-21T21:19:04.127Z"
+  },
+  {
+    "id": 9,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Crecimiento Personal",
+    "color": "#7CFC00",
+    "tamano": 2,
+    "fecha": "2026-06-21T21:20:32.613Z"
+  },
+  {
+    "id": 10,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Crecimiento Personal",
+    "color": "#7CFC00",
+    "tamano": 2,
+    "fecha": "2026-06-21T21:25:19.469Z"
+  },
+  {
+    "id": 11,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Familia",
+    "color": "#FFD700",
+    "tamano": 2,
+    "fecha": "2026-06-21T21:28:25.652Z"
+  },
+  {
+    "id": 12,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Crecimiento Personal",
+    "emocion": "neutra",
+    "intensidad": 2,
+    "color": "#7CFC00",
+    "tamano": 5,
+    "fecha": "2026-06-21T21:36:04.893Z"
+  },
+  {
+    "id": 13,
+    "texto": "mi familia me apoya mucho",
+    "categoria": "Crecimiento Personal",
+    "emocion": "neutra",
+    "intensidad": 2,
+    "color": "#7CFC00",
+    "tamano": 5,
+    "fecha": "2026-06-21T21:37:03.296Z"
+  },
+  {
+    "id": 14,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Crecimiento Personal",
+    "emocion": "neutra",
+    "intensidad": 2,
+    "color": "#7CFC00",
+    "tamano": 5,
+    "fecha": "2026-06-21T21:39:23.032Z"
+  },
+  {
+    "id": 15,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Crecimiento Personal",
+    "emocion": "neutra",
+    "intensidad": 2,
+    "color": "#7CFC00",
+    "tamano": 5,
+    "fecha": "2026-06-21T21:40:01.454Z"
+  },
+  {
+    "id": 16,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Crecimiento Personal",
+    "emocion": "neutra",
+    "intensidad": 2,
+    "color": "#7CFC00",
+    "tamano": 5,
+    "fecha": "2026-06-21T21:42:04.140Z"
+  },
+  {
+    "id": 17,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Crecimiento Personal",
+    "emocion": "neutra",
+    "intensidad": 2,
+    "color": "#7CFC00",
+    "tamano": 5,
+    "fecha": "2026-06-21T21:43:59.798Z"
+  },
+  {
+    "id": 18,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Crecimiento Personal",
+    "emocion": "neutra",
+    "intensidad": 2,
+    "color": "#7CFC00",
+    "tamano": 5,
+    "fecha": "2026-06-21T21:45:31.809Z"
+  },
+  {
+    "id": 19,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Crecimiento Personal",
+    "emocion": "neutra",
+    "intensidad": 2,
+    "color": "#7CFC00",
+    "tamano": 5,
+    "fecha": "2026-06-21T21:47:24.756Z"
+  },
+  {
+    "id": 20,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Crecimiento Personal",
+    "emocion": "neutra",
+    "intensidad": 2,
+    "color": "#7CFC00",
+    "tamano": 5,
+    "fecha": "2026-06-21T21:47:44.672Z"
+  },
+  {
+    "id": 21,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Crecimiento Personal",
+    "emocion": "neutra",
+    "intensidad": 2,
+    "color": "#7CFC00",
+    "tamano": 5,
+    "fecha": "2026-06-21T21:48:32.224Z"
+  },
+  {
+    "id": 22,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Crecimiento Personal",
+    "emocion": "neutra",
+    "intensidad": 2,
+    "color": "#7CFC00",
+    "tamano": 5,
+    "fecha": "2026-06-21T21:49:33.974Z"
+  },
+  {
+    "id": 23,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Crecimiento Personal",
+    "emocion": "neutra",
+    "intensidad": 2,
+    "color": "#7CFC00",
+    "tamano": 5,
+    "fecha": "2026-06-21T21:54:57.645Z"
+  },
+  {
+    "id": 24,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Amigos",
+    "emocion": "negativa",
+    "intensidad": 3,
+    "color": "#4DA6FF",
+    "tamano": 8,
+    "fecha": "2026-06-21T21:56:11.361Z"
+  },
+  {
+    "id": 25,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Amigos",
+    "emocion": "negativa",
+    "intensidad": 3,
+    "color": "#4DA6FF",
+    "tamano": 8,
+    "fecha": "2026-06-21T21:56:20.925Z"
+  },
+  {
+    "id": 26,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Amigos",
+    "emocion": "negativa",
+    "intensidad": 3,
+    "color": "#4DA6FF",
+    "tamano": 8,
+    "fecha": "2026-06-21T21:58:13.098Z"
+  },
+  {
+    "id": 27,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Amigos",
+    "emocion": "negativa",
+    "intensidad": 3,
+    "color": "#4DA6FF",
+    "tamano": 8,
+    "fecha": "2026-06-21T21:59:22.031Z"
+  },
+  {
+    "id": 28,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Amigos",
+    "emocion": "negativa",
+    "intensidad": 3,
+    "color": "#4DA6FF",
+    "tamano": 8,
+    "fecha": "2026-06-21T21:59:30.476Z"
+  },
+  {
+    "id": 29,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Amigos",
+    "color": "#4DA6FF",
+    "tamano": 4,
+    "fecha": "2026-06-21T22:07:26.286Z"
+  }
+]
