@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Constelación de Huellas</title>
+  <!-- Anonymous Pro -->
+  <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- FONDO UNIVERSO -->
+  <div id="universo-contenedor">
+    <div id="universo-viewport">
+      <div id="fondo-espacial" aria-hidden="true"></div>
+      <div id="capa-estrellas"></div>
+      <!-- Estrella en gestación -->
+      <div id="estrella-naciente" class="oculto" aria-hidden="true">
+        <svg viewBox="0 0 100 100" class="estrella-svg">
+          <polygon points="50,5 61,35 93,35 68,55 79,85 50,68 21,85 32,55 7,35 39,35" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULARIO -->
+  <main id="capa-formulario">
+    <h1 id="titulo-poetico">¿Qué huella permanece contigo?</h1>
+    <form id="form-huella" autocomplete="off">
+      <textarea
+        id="input-huella"
+        name="huella"
+        placeholder="Escribe un recuerdo que quieras convertir en una estrella..."
+        maxlength="280"
+        rows="3"
+        required
+      ></textarea>
+      <button id="btn-enviar" type="submit">Enviar</button>
+    </form>
+  </main>
+
+  <!-- PROCESO -->
+  <section id="capa-proceso" class="oculto" aria-live="polite">
+    <p id="texto-proceso">El universo está leyendo tu recuerdo...</p>
+    <div id="resultado-huella" class="oculto">
+      <p id="resultado-categoria"></p>
+      <p id="resultado-emocion"></p>
+    </div>
+  </section>
+
+  <!-- GUÍA -->
+  <p id="guia-exploracion" class="oculto">
+    Arrastra para explorar · desplázate para acercar
+  </p>
+
+  <script src="script.js"></script>
+</body>
+</html>
