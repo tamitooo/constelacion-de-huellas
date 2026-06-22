@@ -280,5 +280,69 @@
     "brillo": 4,
     "zona": "Este",
     "fecha": "2026-06-22T02:29:08.758Z"
+  },
+  {
+    "id": 31,
+    "texto": "El día que nació mi hermana, supe que el amor no tiene límites.",
+    "categoria": "Familia",
+    "emocion": "Alegría",
+    "intensidad": 4,
+    "palabrasClave": [
+      "hermana",
+      "amor",
+      "límites"
+    ],
+    "color": "#FFD700",
+    "brillo": 4,
+    "zona": "Oeste",
+    "fecha": "2026-06-22T03:22:37.952Z"
+  },
+  {
+    "id": 32,
+    "texto": "Esa carta de despedida que nunca envié, pero que me hizo crecer.",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Nostalgia",
+    "intensidad": 4,
+    "palabrasClave": [
+      "carta",
+      "despedida",
+      "crecer"
+    ],
+    "color": "#7B68EE",
+    "brillo": 4,
+    "zona": "Centro",
+    "fecha": "2026-06-22T04:19:41.569Z"
+  },
+  {
+    "id": 33,
+    "texto": "Terminar mi tesis después de noches sin dormir fue el orgullo más grande",
+    "categoria": "Estudios",
+    "emocion": "Alegría",
+    "intensidad": 5,
+    "palabrasClave": [
+      "tesis",
+      "orgullo",
+      "logro"
+    ],
+    "color": "#FFD700",
+    "brillo": 5,
+    "zona": "Norte",
+    "fecha": "2026-06-22T04:20:10.837Z"
+  },
+  {
+    "id": 34,
+    "texto": "Cuando él me miró por primera vez, el mundo se detuvo.",
+    "categoria": "Amor",
+    "emocion": "Alegría",
+    "intensidad": 4,
+    "palabrasClave": [
+      "mirada",
+      "impacto",
+      "amor"
+    ],
+    "color": "#FFD700",
+    "brillo": 4,
+    "zona": "Sur",
+    "fecha": "2026-06-22T04:38:40.335Z"
   }
 ]

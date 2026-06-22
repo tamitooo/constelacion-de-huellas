@@ -72,7 +72,7 @@ Edita el archivo `.env` ubicado en la raíz de `backend/` con tus propios valore
 PORT=4000
 OPENAI_API_KEY=sk-tu-api-key-aqui
 OPENAI_MODEL=gpt-4o-mini
-CORS_ORIGIN=http://localhost:5173
+CORS_ORIGIN=http://127.0.0.1:5173
 ```
 
 > ⚠️ **Importante:** nunca subas tu `.env` real a un repositorio público. El `.gitignore` ya lo excluye.
@@ -262,7 +262,7 @@ curl http://localhost:4000/api/constelacion
 ## 🔗 Integración con el frontend (React + Vite)
 
 El backend ya tiene CORS habilitado para el origen definido en `CORS_ORIGIN` (por defecto
-`http://localhost:5173`, el puerto por defecto de Vite). Desde React solo necesitas hacer
+`http://127.0.0.1:5173`, el puerto por defecto de Vite). Desde React solo necesitas hacer
 peticiones `fetch`/`axios` a `http://localhost:4000/api/...`.
 
 ---
