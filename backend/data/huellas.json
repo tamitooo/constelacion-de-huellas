@@ -264,5 +264,21 @@
     "color": "#4DA6FF",
     "tamano": 4,
     "fecha": "2026-06-21T22:07:26.286Z"
+  },
+  {
+    "id": 30,
+    "texto": "Extraño mucho a mis amigos del colegio, solíamos reírnos de cualquier tontería.",
+    "categoria": "Amigos",
+    "emocion": "Nostalgia",
+    "intensidad": 4,
+    "palabrasClave": [
+      "amigos",
+      "colegio",
+      "reírnos"
+    ],
+    "color": "#7B68EE",
+    "brillo": 4,
+    "zona": "Este",
+    "fecha": "2026-06-22T02:29:08.758Z"
   }
 ]

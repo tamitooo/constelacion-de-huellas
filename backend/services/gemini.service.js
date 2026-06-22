@@ -18,19 +18,46 @@ const clasificarHuella = async (texto) => {
     const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
     const prompt = `
-Eres un clasificador para la instalación interactiva "Constelación de Huellas".
-Tu única tarea es analizar el texto de un visitante y clasificarlo en una (1) de estas categorías exactas:
-Familia
-Amigos
-Amor
-Estudios
-Crecimiento Personal
+Analiza el siguiente texto para la obra interactiva "Constelación de Huellas".
 
-REGLAS OBLIGATORIAS:
-- Responde únicamente con el nombre de la categoría elegida, idéntica a la lista.
-- No agregues puntuación, explicaciones, ni texto adicional.
+Devuelve EXCLUSIVAMENTE un JSON válido.
 
-Texto del visitante: "${texto}"
+Categorías permitidas:
+- Familia
+- Amigos
+- Amor
+- Estudios
+- Crecimiento Personal
+
+Emociones permitidas:
+- Alegría
+- Nostalgia
+- Gratitud
+- Tristeza
+- Esperanza
+- Neutral
+
+Formato obligatorio:
+
+{
+  "categoria": "Familia",
+  "emocion": "Gratitud",
+  "intensidad": 3,
+  "palabrasClave": ["hogar","mamá","apoyo"]
+}
+
+Reglas:
+- categoria debe ser exactamente una de las categorías permitidas.
+- emocion debe ser exactamente una de las emociones permitidas.
+- intensidad debe ser un número entero entre 1 y 5.
+- palabrasClave debe contener máximo 3 palabras.
+- No escribas explicaciones.
+- No uses markdown.
+- No uses bloques de código.
+- Devuelve únicamente JSON.
+
+Texto:
+"${texto}"
 `;
 
     // Petición HTTP directa
@@ -56,32 +83,34 @@ Texto del visitante: "${texto}"
     // Extraemos el texto de la respuesta estructurada de Google
     const textResponse = data.candidates[0].content.parts[0].text.trim();
 
-    // Normalizar para comparar de forma segura
-    const normalizar = (txt) =>
-      txt
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z ]/g, "")
-        .trim();
+    console.log("Gemini respondió:");
+    console.log(textResponse);
 
-    const encontrado = CATEGORIAS.find(
-      (c) => normalizar(c) === normalizar(textResponse)
-    );
+    const limpio = textResponse
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
 
-    if (encontrado) {
-      return encontrado;
-    }
+    const resultado = JSON.parse(limpio);
 
-    console.log(`[Gemini API] Respuesta inesperada: "${textResponse}". Usando por defecto.`);
-    return "Crecimiento Personal";
+    return {
+      categoria: resultado.categoria || "Crecimiento Personal",
+      emocion: resultado.emocion || "Esperanza",
+      intensidad: resultado.intensidad || 2,
+      palabrasClave: resultado.palabrasClave || []
+    };
 
   } catch (error) {
     console.error("====== ERROR EN CLASIFICAR HUELLA (FETCH) ======");
     console.error(error.message);
     console.error("================================================");
     
-    return "Crecimiento Personal";
+    return {
+      categoria: "Crecimiento Personal",
+      emocion: "Esperanza",
+      intensidad: 2,
+      palabrasClave: []
+    };
   }
 };
 
