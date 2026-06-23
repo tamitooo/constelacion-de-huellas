@@ -22,19 +22,11 @@ const PORT = process.env.PORT || 4000;
 // --------------------------------------------------------
 
 // Habilita CORS para permitir peticiones desde el frontend (React + Vite)
-const allowed = process.env.CORS_ORIGIN?.split(',');
 
-app.use(
-  cors({
-    origin: function (origin, cb) {
-      if (!origin || allowed.includes(origin)) {
-        cb(null, true);
-      } else {
-        cb(new Error('CORS no permitido'));
-      }
-    }
-  })
-);
+
+app.use(cors({
+  origin: "*"
+}));
 
 // Permite parsear el body de las peticiones en formato JSON
 app.use(express.json());

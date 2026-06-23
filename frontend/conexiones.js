@@ -1,0 +1,119 @@
+// conexiones.js
+import { CONEXION } from './config.js';
+
+let conexiones = [];
+
+export function getConexiones() { return conexiones; }
+
+export function palabrasCompartidas(a, b) {
+  if (!a.palabrasClave.length || !b.palabrasClave.length) return 0;
+  const setA = new Set(a.palabrasClave.map(p => p.toLowerCase()));
+  return b.palabrasClave.filter(p => setA.has(p.toLowerCase())).length;
+}
+
+export function distancia(a, b) {
+  const dx = a.x - b.x;
+  const dy = a.y - b.y;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+export function recalcularConexiones(estrellas) {
+  if (estrellas.length < 2) {
+    conexiones = [];
+    return;
+  }
+
+  const candidatos = [];
+
+  for (let i = 0; i < estrellas.length; i++) {
+    for (let j = i + 1; j < estrellas.length; j++) {
+      const a = estrellas[i];
+      const b = estrellas[j];
+
+      let score = 0;
+
+      if (a.categoria === b.categoria) score += CONEXION.SCORE_CATEGORIA;
+      if (a.emocion && b.emocion && a.emocion === b.emocion) score += CONEXION.SCORE_EMOCION;
+      if (palabrasCompartidas(a, b) > 0) score += CONEXION.SCORE_PALABRAS_CLAVE;
+      if (distancia(a, b) < CONEXION.DIST_MAX) score += CONEXION.SCORE_DISTANCIA;
+
+      if (score >= CONEXION.SCORE_MINIMO) {
+        candidatos.push({ a, b, score });
+      }
+    }
+  }
+
+  candidatos.sort((x, y) => y.score - x.score);
+
+  const gradosUsados = new Map();
+  const seleccionadas = [];
+
+  for (const c of candidatos) {
+    const gradoA = gradosUsados.get(c.a.id) || 0;
+    const gradoB = gradosUsados.get(c.b.id) || 0;
+
+    if (gradoA < CONEXION.MAX_POR_ESTRELLA && gradoB < CONEXION.MAX_POR_ESTRELLA) {
+      seleccionadas.push(c);
+      gradosUsados.set(c.a.id, gradoA + 1);
+      gradosUsados.set(c.b.id, gradoB + 1);
+    }
+  }
+
+  const claveConexion = (c) =>
+    [Math.min(c.a.id, c.b.id), Math.max(c.a.id, c.b.id)].join('-');
+
+  const opacidadPrevia = new Map();
+  for (const c of conexiones) {
+    opacidadPrevia.set(claveConexion(c), c.opacity);
+  }
+
+  conexiones = seleccionadas.map(c => ({
+    ...c,
+    opacity: opacidadPrevia.get(claveConexion(c)) ?? 0,
+    opacityTarget: Math.min(0.18 + (c.score - 3) * 0.06, 0.45),
+  }));
+}
+
+export function dibujarConexiones(ctx, capaConexiones) {
+  ctx.clearRect(0, 0, capaConexiones.width, capaConexiones.height);
+
+  for (const c of conexiones) {
+    c.opacity += (c.opacityTarget - c.opacity) * 0.025;
+
+    if (c.opacity < 0.005) continue;
+
+    const colorLinea = '#ffffff';
+
+    const grad = ctx.createLinearGradient(c.a.x, c.a.y, c.b.x, c.b.y);
+    grad.addColorStop(0, hexAColor(colorLinea, 0));
+    grad.addColorStop(0.25, hexAColor(colorLinea, c.opacity));
+    grad.addColorStop(0.5, hexAColor(colorLinea, c.opacity * 1.4));
+    grad.addColorStop(0.75, hexAColor(colorLinea, c.opacity));
+    grad.addColorStop(1, hexAColor(colorLinea, 0));
+
+    ctx.beginPath();
+    ctx.moveTo(c.a.x, c.a.y);
+    ctx.lineTo(c.b.x, c.b.y);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 0.6;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+  }
+}
+
+/**
+ * Convierte un color hex (#RRGGBB) a rgba(...) con la opacidad dada.
+ * Si el formato no es válido, cae a blanco en vez de pintar
+ * "NaN, NaN, NaN" silenciosamente (que rompería el canvas sin avisar).
+ */
+function hexAColor(hex, alpha) {
+  const esHexValido = /^#[0-9a-fA-F]{6}$/.test(hex);
+  if (!esHexValido) {
+    console.warn(`hexAColor recibió un valor inesperado: "${hex}". Usando blanco como fallback.`);
+    return `rgba(255,255,255,${alpha})`;
+  }
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}

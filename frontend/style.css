@@ -1,5 +1,5 @@
 /* ============================================================
-   style.css — Rectángulos con bordes redondeados (pill)
+   style.css — Constelación de Huellas
    ============================================================ */
 
 * {
@@ -39,6 +39,13 @@ body {
   will-change: transform;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   FONDO ESPACIAL
+   ─────────────────────────────────────────────────────────────
+   Para usar tu ilustración: pon la imagen en ./assets/universo.png
+   y cambia la línea background-image de abajo.
+   Ajusta `opacity` para calibrar cuánto se ve.
+   ───────────────────────────────────────────────────────────── */
 #fondo-espacial {
   position: absolute;
   top: 0;
@@ -50,6 +57,24 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-color: #0a0a12;
+  opacity: 1; /* ← baja si la imagen es muy intensa */
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CANVAS DE CONEXIONES (aristas de la constelación)
+   ─────────────────────────────────────────────────────────────
+   Ocupa el mismo espacio que las estrellas.
+   Vive dentro del viewport → se mueve con el pan y zoom.
+   pointer-events: none → no bloquea la interacción del usuario.
+   ───────────────────────────────────────────────────────────── */
+#capa-conexiones {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* z-index 0 → debajo de las estrellas (que están en otro div) */
 }
 
 #capa-estrellas {
@@ -67,8 +92,11 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 120px;
-  height: 120px;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
   z-index: 10;
   transition: opacity 0.8s ease;
@@ -91,13 +119,17 @@ body {
 }
 
 @keyframes girar-estrella {
-  0% { transform: rotate(0deg) scale(0.8); }
-  50% { transform: rotate(180deg) scale(1.2); }
+  0%   { transform: rotate(0deg)   scale(0.8); }
+  50%  { transform: rotate(180deg) scale(1.2); }
   100% { transform: rotate(360deg) scale(0.8); }
 }
 @keyframes brillo-estrella {
-  0% { opacity: 0.4; filter: drop-shadow(0 0 20px #ffd700); }
-  100% { opacity: 0.9; filter: drop-shadow(0 0 60px #ffd700) drop-shadow(0 0 120px #ffd70044); }
+  0%   { opacity: 0.4; }
+  100% { opacity: 0.9; }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 /* ---------- FORMULARIO ---------- */
@@ -125,7 +157,6 @@ body {
   letter-spacing: 0.04em;
   margin-bottom: 1.8rem;
   color: #ffffff;
-  opacity: 1;
 }
 
 #form-huella {
@@ -135,47 +166,45 @@ body {
   gap: 1.8rem;
 }
 
-/* ---- CUADRO DE TEXTO (border-radius grande) ---- */
 #input-huella {
-  
   width: 600px;
   max-width: 90vw;
-
   min-height: 60px;
-
   padding: 1.9rem;
-
-  font-family: 'Anonymous Pro', monospace;
-  font-size: 0.95rem;
   padding-top: 1.4rem;
   padding-bottom: 0rem;
-
+  font-family: 'Anonymous Pro', monospace;
+  font-size: 0.95rem;
   color: #fff;
   background: transparent;
-
   border: 1px solid #fff;
   border-radius: 2.5rem;
-
   outline: none;
-
   resize: none;
-  overflow: hidden; /* 🔥 clave */
-
+  overflow: hidden;
   box-sizing: border-box;
-
 }
-
 #input-huella:focus {
   border-color: #ffffff;
   box-shadow: 0 0 20px rgba(255,255,255,0.1);
 }
 #input-huella::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255,255,255,0.5);
   font-style: italic;
   font-weight: 300;
 }
 
-/* ---- BOTÓN (border-radius grande) ---- */
+#contador-caracteres {
+  font-family: 'Anonymous Pro', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.35);
+  margin-top: -1rem;
+}
+#contador-caracteres.contador-bajo {
+  color: rgba(255,150,150,0.8);
+}
+
 #btn-enviar {
   padding: 0.7rem 1.2rem;
   font-family: 'Anonymous Pro', monospace;
@@ -185,37 +214,34 @@ body {
   color: #000000;
   background: #ffffff;
   border: 1px solid #ffffff;
-  border-radius: 2.5rem;   
+  border-radius: 2.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: none;
 }
-#btn-enviar:hover {
-  background: #f0f0f0;
-  border-color: #f0f0f0;
-}
-#btn-enviar:active {
-  transform: scale(0.96);
-}
-#btn-enviar:disabled {
-  opacity: 0.4;
-  pointer-events: none;
-}
+#btn-enviar:hover  { background: #f0f0f0; border-color: #f0f0f0; }
+#btn-enviar:active { transform: scale(0.96); }
+#btn-enviar:disabled { opacity: 0.4; pointer-events: none; }
 
 /* ---------- PROCESO ---------- */
 #capa-proceso {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 25;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
   text-align: center;
-  pointer-events: none;
+  z-index: 25;
   transition: opacity 0.8s ease;
+  pointer-events: none;
 }
 #capa-proceso.oculto {
   opacity: 0;
   pointer-events: none;
+}
+#capa-proceso:not(.oculto) {
+  pointer-events: auto;
 }
 
 #texto-proceso {
@@ -255,6 +281,27 @@ body {
   letter-spacing: 0.08em;
 }
 
+/* ---------- BOTONES DE PROCESO (Volver / Reintentar) ---------- */
+.boton-volver {
+  margin-top: 1rem;
+  padding: 0.8rem 2rem;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 40px;
+  color: white;
+  font-family: 'Anonymous Pro', monospace;
+  font-size: 1.1rem;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.3s ease;
+}
+.boton-volver:hover {
+  background: rgba(255,255,255,0.2);
+}
+.boton-volver.oculto {
+  display: none;
+}
+
 /* ---------- GUÍA ---------- */
 #guia-exploracion {
   position: fixed;
@@ -266,16 +313,14 @@ body {
   font-weight: 400;
   font-size: 0.7rem;
   letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(255,255,255,0.2);
   text-align: center;
   pointer-events: none;
   transition: opacity 1.2s ease;
 }
-#guia-exploracion.oculto {
-  opacity: 0;
-}
+#guia-exploracion.oculto { opacity: 0; }
 
-/* ---------- ESTRELLAS DOM (SVG) ---------- */
+/* ---------- ESTRELLAS DOM (pixel art con brillo) ---------- */
 .estrella-dom {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -283,71 +328,34 @@ body {
   will-change: transform, opacity;
   width: 40px;
   height: 40px;
-  transition: none;
+  animation: pixelStarPulse 2.4s ease-in-out infinite;
 }
 
-.estrella-dom svg {
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 0 15px currentColor) drop-shadow(0 0 30px currentColor);
-  animation: brillo-estrella-dom 2.4s ease-in-out infinite alternate;
-}
-.estrella-dom svg polygon {
-  fill: currentColor;
-  opacity: 0.5;
-}
-
-@keyframes brillo-estrella-dom {
-  0% { filter: drop-shadow(0 0 10px currentColor) drop-shadow(0 0 20px currentColor44); }
-  100% { filter: drop-shadow(0 0 30px currentColor) drop-shadow(0 0 60px currentColor33); }
-}
-
-.estrella-dom.tamano-grande { width: 56px; height: 56px; }
-.estrella-dom.tamano-medio { width: 44px; height: 44px; }
+.estrella-dom.tamano-grande  { width: 56px; height: 56px; }
+.estrella-dom.tamano-medio   { width: 44px; height: 44px; }
 .estrella-dom.tamano-pequeno { width: 32px; height: 32px; }
+
+@keyframes pixelStarPulse {
+  0%   { transform: translate(-50%, -50%) scale(0.90); opacity: 0.70; }
+  50%  { transform: translate(-50%, -50%) scale(1.15); opacity: 1.00; }
+  100% { transform: translate(-50%, -50%) scale(0.90); opacity: 0.70; }
+}
+
+/* Ocultar estrellas y conexiones durante la carga */
+#universo-viewport.ocultar-constelacion #capa-estrellas,
+#universo-viewport.ocultar-constelacion #capa-conexiones {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 600px) {
-  #titulo-poetico { font-size: 1.4rem; }
-  #input-huella { font-size: 0.95rem; padding: 1rem 1.2rem; min-height: 70px; border-radius: 2rem; }
-  #btn-enviar { font-size: 1rem; padding: 0.6rem 1.8rem; border-radius: 2rem; }
+  #titulo-poetico  { font-size: 1.4rem; }
+  #input-huella    { font-size: 0.95rem; padding: 1rem 1.2rem; min-height: 70px; border-radius: 2rem; }
+  #btn-enviar      { font-size: 1rem; padding: 0.6rem 1.8rem; border-radius: 2rem; }
   #resultado-categoria { font-size: 1.6rem; }
-  .estrella-dom { width: 30px; height: 30px; }
-  .estrella-dom.tamano-grande { width: 40px; height: 40px; }
-  .estrella-dom.tamano-medio { width: 34px; height: 34px; }
+  .estrella-dom          { width: 30px; height: 30px; }
+  .estrella-dom.tamano-grande  { width: 40px; height: 40px; }
+  .estrella-dom.tamano-medio   { width: 34px; height: 34px; }
   .estrella-dom.tamano-pequeno { width: 24px; height: 24px; }
-}
-.estrella-dom {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  animation: pixelStarPulse 2s ease-in-out infinite;
-}
-
-@keyframes pixelStarPulse {
-
-  0% {
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: .7;
-  }
-
-  50% {
-    transform: translate(-50%, -50%) scale(1.15);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: .7;
-  }
-}
-
-#capa-lineas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
 }

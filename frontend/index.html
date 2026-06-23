@@ -4,24 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Constelación de Huellas</title>
-  <!-- Anonymous Pro -->
   <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- FONDO UNIVERSO -->
+  <!-- UNIVERSO: viewport con pan y zoom -->
   <div id="universo-contenedor">
     <div id="universo-viewport">
+
+      <!-- Fondo (imagen reemplazable desde style.css) -->
       <div id="fondo-espacial" aria-hidden="true"></div>
+
+      <!--
+        ════════════════════════════════════════════════
+        CANVAS DE CONEXIONES
+        ────────────────────────────────────────────────
+        Vive DENTRO del viewport para que las líneas
+        se transformen junto con las estrellas (pan/zoom).
+        Se dibuja ANTES que capa-estrellas para que las
+        estrellas queden siempre encima de las aristas.
+        ════════════════════════════════════════════════
+      -->
+      <canvas id="capa-conexiones" aria-hidden="true"></canvas>
+
+      <!-- Estrellas DOM (pixeladas, con brillo) -->
       <div id="capa-estrellas"></div>
-      <canvas id="capa-lineas"></canvas>
-      <!-- Estrella en gestación -->
+
+      <!-- Estrella en gestación (animación al enviar) -->
       <div id="estrella-naciente" class="oculto" aria-hidden="true">
         <svg viewBox="0 0 100 100" class="estrella-svg">
           <polygon points="50,5 61,35 93,35 68,55 79,85 50,68 21,85 32,55 7,35 39,35" />
         </svg>
       </div>
+
     </div>
   </div>
 
@@ -37,6 +53,7 @@
         rows="3"
         required
       ></textarea>
+      <p id="contador-caracteres">280 caracteres restantes</p>
       <button id="btn-enviar" type="submit">Enviar</button>
     </form>
   </main>
@@ -44,17 +61,30 @@
   <!-- PROCESO -->
   <section id="capa-proceso" class="oculto" aria-live="polite">
     <p id="texto-proceso">El universo está leyendo tu recuerdo...</p>
+
     <div id="resultado-huella" class="oculto">
       <p id="resultado-categoria"></p>
       <p id="resultado-emocion"></p>
     </div>
+
+    <!-- Botones estáticos: existen siempre en el DOM, solo se
+         muestran/ocultan con la clase .oculto, igual que el resto
+         de capas. Esto evita crear/destruir nodos dinámicamente
+         y los bugs de listeners huérfanos que eso puede provocar. -->
+    <button id="boton-volver" class="boton-volver oculto" type="button">
+      ← Volver a escribir
+    </button>
+
+    <button id="boton-reintentar" class="boton-volver oculto" type="button">
+      Reintentar
+    </button>
   </section>
 
-  <!-- GUÍA -->
+  <!-- GUÍA DE EXPLORACIÓN -->
   <p id="guia-exploracion" class="oculto">
     Arrastra para explorar · desplázate para acercar
   </p>
 
-  <script src="script.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
