@@ -14,6 +14,8 @@
   // ---- Referencias al DOM ----
   const viewport = document.getElementById('universo-viewport');
   const capaEstrellas = document.getElementById('capa-estrellas');
+  const canvas = document.getElementById('capa-lineas');
+  const ctx = canvas.getContext('2d');
   const estrellaNaciente = document.getElementById('estrella-naciente');
 
   const capaFormulario = document.getElementById('capa-formulario');
@@ -43,77 +45,87 @@
   let estrellas = [];
 
   // ---- Mapeo de zona a coordenadas (dentro del viewport) ----
-  function posicionPorZona(zona) {
-    const zonas = {
-      'Oeste':  { x: -300, y: 0 },
-      'Este':   { x:  300, y: 0 },
-      'Sur':    { x: 0, y:  300 },
-      'Norte':  { x: 0, y: -300 },
-      'Centro': { x: 0, y: 0 },
-    };
-    const pos = zonas[zona] || { x: 0, y: 0 };
-    // Pequeña dispersión aleatoria
-    return {
-      x: pos.x + (Math.random() - 0.5) * 80,
-      y: pos.y + (Math.random() - 0.5) * 80,
-    };
-  }
+ function posicionPorZona(zona) {
+
+  const radio = 500;
+
+  return {
+    x: window.innerWidth / 2 + (Math.random() - 0.5) * radio * 2,
+    y: window.innerHeight / 2 + (Math.random() - 0.5) * radio * 2
+  };
+}
+// ---- Ajustar tamaño del canvas al tamaño de la ventana ----
+function ajustarCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', ajustarCanvas);
 
   // ---- Crear una estrella en el DOM ----
-  function crearEstrellaDOM(datos) {
+function crearEstrellaDOM(datos) {
   const { x, y, color, tamano, categoria, emocion } = datos;
 
-  // Contenedor de la estrella
   const contenedor = document.createElement('div');
   contenedor.className = 'estrella-dom';
+
   contenedor.style.left = x + 'px';
   contenedor.style.top = y + 'px';
   contenedor.style.width = tamano + 'px';
   contenedor.style.height = tamano + 'px';
 
-  // Creamos la estrella con SVG (para tener forma de estrella de 5 puntas)
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('viewBox', '0 0 100 100');
-  svg.style.width = '100%';
-  svg.style.height = '100%';
-  svg.style.display = 'block';
-  svg.style.filter = 'drop-shadow(0 0 8px ' + color + 'aa)'; // Brillo suave (sombra)
-  svg.style.transition = 'filter 0.3s';
+  const pixelSize = Math.max(2, tamano / 12);
 
-  // Polígono de estrella (5 puntas)
-  const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-  const points = [];
-  const cx = 50, cy = 50, outerR = 45, innerR = 18;
-  for (let i = 0; i < 10; i++) {
-    const angle = (i * Math.PI) / 5 - Math.PI / 2;
-    const r = i % 2 === 0 ? outerR : innerR;
-    const px = cx + r * Math.cos(angle);
-    const py = cy + r * Math.sin(angle);
-    points.push(px + ',' + py);
+  const pattern = [];
+
+  const center = 0;
+
+  // cruz principal
+  for (let i = -8; i <= 8; i++) {
+    pattern.push([i, 0, 8 - Math.floor(Math.abs(i) * 0.8)]);
+    pattern.push([0, i, 8 - Math.floor(Math.abs(i) * 0.8)]);
   }
-  polygon.setAttribute('points', points.join(' '));
-  polygon.setAttribute('fill', color);
-  polygon.setAttribute('opacity', '0.7'); // Transparencia para que no sea tan fuerte
-  polygon.setAttribute('stroke', color);
-  polygon.setAttribute('stroke-width', '1.5');
-  polygon.setAttribute('stroke-opacity', '0.3');
 
-  // Agregamos un halo (brillo suave) con un círculo difuso detrás
-  const halo = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-  halo.setAttribute('cx', '50');
-  halo.setAttribute('cy', '50');
-  halo.setAttribute('r', '55');
-  halo.setAttribute('fill', color);
-  halo.setAttribute('opacity', '0.1');
-  halo.setAttribute('filter', 'blur(6px)');
+  // diagonales
+  for (let d = 1; d <= 4; d++) {
+    const b = 5 - d;
 
-  // Insertamos halo detrás y luego la estrella
-  svg.appendChild(halo);
-  svg.appendChild(polygon);
+    pattern.push([ d,  d, b]);
+    pattern.push([-d,  d, b]);
+    pattern.push([ d, -d, b]);
+    pattern.push([-d, -d, b]);
+  }
 
-  contenedor.appendChild(svg);
+  pattern.push([0, 0, 8]);
 
-  // Guardamos datos para depuración
+  pattern.forEach(([px, py, brightness]) => {
+
+    const pixel = document.createElement('div');
+
+    const alpha = brightness / 8;
+
+    pixel.style.position = 'absolute';
+
+    pixel.style.width = pixelSize + 'px';
+    pixel.style.height = pixelSize + 'px';
+
+    pixel.style.left =
+      `calc(50% + ${px * pixelSize}px - ${pixelSize / 2}px)`;
+
+    pixel.style.top =
+      `calc(50% + ${py * pixelSize}px - ${pixelSize / 2}px)`;
+
+    pixel.style.background = color;
+
+    pixel.style.opacity = alpha;
+
+    pixel.style.boxShadow =
+      `0 0 ${pixelSize * 2}px ${color},
+       0 0 ${pixelSize * 4}px ${color}`;
+
+    contenedor.appendChild(pixel);
+  });
+
   contenedor.dataset.categoria = categoria;
   contenedor.dataset.emocion = emocion;
 
@@ -369,6 +381,7 @@
   async function init() {
     // Cargar constelación existente
     await cargarConstelacion();
+    ajustarCanvas();
 
     // Configurar cámara inicial
     camera.x = 0;

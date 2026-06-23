@@ -344,5 +344,17 @@
     "brillo": 4,
     "zona": "Sur",
     "fecha": "2026-06-22T04:38:40.335Z"
+  },
+  {
+    "id": 35,
+    "texto": "Cuando casi me voy a trika por calculo de una variable",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T00:30:40.073Z"
   }
 ]
