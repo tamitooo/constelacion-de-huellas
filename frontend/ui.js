@@ -121,6 +121,11 @@ export async function manejarEnvio(e, callbackRecalcular) {
 
     detenerAnimacionBrillo();
 
+    // Detenemos la rotación de la estrella naciente: debe girar
+    // solo durante la fase de "decidiendo colores", pero quedarse
+    // quieta una vez que ya sabemos qué estrella es de verdad.
+    temporal.elementoGiro.style.animation = 'none';
+
     // Fijamos la estrella naciente en su color definitivo (el de
     // su categoría/emoción real) en vez de dejarla en el último
     // color aleatorio de la animación. Así, mientras se lee el

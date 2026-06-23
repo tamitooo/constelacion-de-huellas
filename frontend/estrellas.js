@@ -143,7 +143,11 @@ export function crearEstrellaTemporal(colorInicial = '#FFD700', intensidadInicia
 
   contenedorGiro.appendChild(estrellaDiv);
 
-  return { element: contenedorGiro, pixels, pixelSize };
+  // Se expone `contenedorGiro` (con el alias `elementoGiro`) además
+  // de `element`, para que quien use esta estrella temporal pueda
+  // detener su rotación en el momento que decida (por ejemplo, al
+  // fijar el color definitivo, justo antes de revelar la categoría).
+  return { element: contenedorGiro, elementoGiro: contenedorGiro, pixels, pixelSize };
 }
 
 export function anadirEstrella(datosBackend, callbackRecalcular) {

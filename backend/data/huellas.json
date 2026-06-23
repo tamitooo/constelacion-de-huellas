@@ -474,5 +474,41 @@
     "brillo": 2,
     "zona": "Centro",
     "fecha": "2026-06-23T04:40:16.555Z"
+  },
+  {
+    "id": 34,
+    "texto": "no",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T04:48:44.243Z"
+  },
+  {
+    "id": 35,
+    "texto": "a",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T04:50:42.281Z"
+  },
+  {
+    "id": 36,
+    "texto": "xd",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T04:58:23.641Z"
   }
 ]
