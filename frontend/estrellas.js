@@ -6,19 +6,25 @@ let estrellas = [];
 
 // Intentos máximos para encontrar una posición sin colisión
 // antes de aceptar una posición aleatoria como último recurso.
-const INTENTOS_POSICION = 20;
+const INTENTOS_POSICION = 50;
 
 export function setCapaEstrellas(el) { capaEstrellas = el; }
 export function getEstrellas() { return estrellas; }
+const VIEWPORT_W = 4000;
+const VIEWPORT_H = 4000;
 
 export function posicionPorCategoria(categoria, tamanoNueva) {
   const offset = ZONA_OFFSET[categoria] || { dx: 0, dy: 0 };
-  const cx = window.innerWidth / 2;
-  const cy = window.innerHeight / 2;
+  const cx = VIEWPORT_W / 2;
+  const cy = VIEWPORT_H / 2;
 
   for (let intento = 0; intento < INTENTOS_POSICION; intento++) {
-    const x = cx + offset.dx + (Math.random() - 0.5) * DISPERSION;
-    const y = cy + offset.dy + (Math.random() - 0.5) * DISPERSION;
+    // Escala más agresiva: cada 3 intentos fallidos expande un 50%
+    const factor = 1 + Math.floor(intento / 3) * 0.5;
+    const dispersion = DISPERSION * factor;
+
+    const x = cx + offset.dx + (Math.random() - 0.5) * dispersion;
+    const y = cy + offset.dy + (Math.random() - 0.5) * dispersion;
 
     const hayColision = estrellas.some(estrella => {
       const dx = x - estrella.x;
@@ -31,12 +37,12 @@ export function posicionPorCategoria(categoria, tamanoNueva) {
     if (!hayColision) return { x, y };
   }
 
-  // Última instancia: no se encontró hueco libre tras varios intentos.
-  // Se acepta una posición aproximada para no bloquear el flujo.
-  console.warn(`No se encontró posición libre para una estrella de categoría "${categoria}" tras ${INTENTOS_POSICION} intentos. Puede quedar superpuesta.`);
+  // Si aun así falla (categoría con decenas de estrellas), acepta
+  // una posición en el anillo más externo sin bloquear el flujo.
+  console.warn(`Sin posición libre para "${categoria}" tras ${INTENTOS_POSICION} intentos.`);
   return {
-    x: cx + offset.dx + (Math.random() - 0.5) * DISPERSION,
-    y: cy + offset.dy + (Math.random() - 0.5) * DISPERSION,
+    x: cx + offset.dx + (Math.random() - 0.5) * DISPERSION * 2.5,
+    y: cy + offset.dy + (Math.random() - 0.5) * DISPERSION * 2.5,
   };
 }
 

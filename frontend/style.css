@@ -28,17 +28,16 @@ body {
   overflow: hidden;
   z-index: 0;
 }
-
+/* ── VIEWPORT GRANDE para muchas estrellas ── */
 #universo-viewport {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  transform-origin: center center;
+  width: 4000px;   /* espacio real para las estrellas */
+  height: 4000px;
+  transform-origin: top left;  /* la cámara traslada desde aquí */
   will-change: transform;
 }
-
 /* ─────────────────────────────────────────────────────────────
    FONDO ESPACIAL
    ─────────────────────────────────────────────────────────────
@@ -46,19 +45,21 @@ body {
    y cambia la línea background-image de abajo.
    Ajusta `opacity` para calibrar cuánto se ve.
    ───────────────────────────────────────────────────────────── */
+
 #fondo-espacial {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('./assets/universo.png'); /* ← reemplaza aquí */
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
   background-color: #0a0a12;
-  opacity: 1; /* ← baja si la imagen es muy intensa */
+  opacity: 1;
 }
+
+
+
+
 
 /* ─────────────────────────────────────────────────────────────
    CANVAS DE CONEXIONES (aristas de la constelación)
@@ -87,20 +88,15 @@ body {
 }
 
 /* ---------- ESTRELLA NACIENTE ---------- */
+
 #estrella-naciente {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  height: 200px;
+  width: 120px;
+  height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  z-index: 10;
+  /* sin position absolute, sin top/left */
   transition: opacity 0.8s ease;
 }
 #estrella-naciente.oculto {
@@ -232,7 +228,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 4rem;
+  gap: 1rem;
   text-align: center;
   z-index: 25;
   transition: opacity 0.8s ease;

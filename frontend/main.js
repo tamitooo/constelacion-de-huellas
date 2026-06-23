@@ -59,10 +59,12 @@ inputHuella.addEventListener('input', actualizarContador);
 
 // ── Canvas context ───────────────────────────────
 const ctx = capaConexiones.getContext('2d');
+const VIEWPORT_W = 4000;
+const VIEWPORT_H = 4000;
 
 function ajustarCanvas() {
-  capaConexiones.width = viewport.offsetWidth || window.innerWidth;
-  capaConexiones.height = viewport.offsetHeight || window.innerHeight;
+  capaConexiones.width  = VIEWPORT_W;
+  capaConexiones.height = VIEWPORT_H;
 }
 
 function recalcularYActualizar() {
@@ -75,20 +77,27 @@ function animar() {
   camera._y += (camera.targetY - camera._y) * 0.08;
   camera._zoom += (camera.targetZoom - camera._zoom) * 0.08;
 
+  // translate negativo: "mover la cámara hacia X" = desplazar el viewport hacia -X
   viewport.style.transform =
-    `translate(${camera._x}px, ${camera._y}px) scale(${camera._zoom})`;
+    `translate(${-camera._x}px, ${-camera._y}px) scale(${camera._zoom})`;
 
   dibujarConexiones(ctx, capaConexiones);
   requestAnimationFrame(animar);
 }
+
+
 
 // ── Inicialización ──────────────────────────────
 async function init() {
   ajustarCanvas();
   window.addEventListener('resize', ajustarCanvas);
 
-  camera.targetX = 0; camera.targetY = 0; camera.targetZoom = 1;
-  camera._x = 0; camera._y = 0; camera._zoom = 1;
+  // Centrar la cámara: 
+  const offsetX = (VIEWPORT_W / 2) - (window.innerWidth  / 2);
+  const offsetY = (VIEWPORT_H / 2) - (window.innerHeight / 2);
+  camera.targetX = offsetX; camera._x = offsetX;
+  camera.targetY = offsetY; camera._y = offsetY;
+  camera.targetZoom = 1;    camera._zoom = 1;
 
   // Cargar constelación
   const nodes = await cargarConstelacion();

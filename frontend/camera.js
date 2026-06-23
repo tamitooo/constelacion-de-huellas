@@ -28,8 +28,9 @@ export function configurarPan(viewport, capaProceso) {
   };
   const moveDrag = (x, y) => {
     if (!isDragging) return;
-    camera.targetX = startCamX - (x - startX) / camera._zoom;
-    camera.targetY = startCamY - (y - startY) / camera._zoom;
+    // Con transform-origin: top left, trasladamos directamente en píxeles
+    camera.targetX = startCamX + (x - startX);
+    camera.targetY = startCamY + (y - startY);
   };
   const endDrag = () => {
     isDragging = false;

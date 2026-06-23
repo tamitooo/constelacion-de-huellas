@@ -31,13 +31,6 @@
       <!-- Estrellas DOM (pixeladas, con brillo) -->
       <div id="capa-estrellas"></div>
 
-      <!-- Estrella en gestación (animación al enviar) -->
-      <div id="estrella-naciente" class="oculto" aria-hidden="true">
-        <svg viewBox="0 0 100 100" class="estrella-svg">
-          <polygon points="50,5 61,35 93,35 68,55 79,85 50,68 21,85 32,55 7,35 39,35" />
-        </svg>
-      </div>
-
     </div>
   </div>
 
@@ -61,7 +54,7 @@
   <!-- PROCESO -->
   <section id="capa-proceso" class="oculto" aria-live="polite">
     <p id="texto-proceso">El universo está leyendo tu recuerdo...</p>
-
+    <div id="estrella-naciente" class="oculto" aria-hidden="true"></div>
     <div id="resultado-huella" class="oculto">
       <p id="resultado-categoria"></p>
       <p id="resultado-emocion"></p>
