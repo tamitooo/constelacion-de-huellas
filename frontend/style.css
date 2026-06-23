@@ -52,7 +52,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-
+  background-image: url('./assets/universo.png'); /* ← reemplaza aquí */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -281,7 +281,7 @@ body {
   letter-spacing: 0.08em;
 }
 
-/* ---------- BOTONES DE PROCESO (Volver / Reintentar) ---------- */
+/* ---------- BOTÓN REINTENTAR (dentro de capa-proceso) ---------- */
 .boton-volver {
   margin-top: 1rem;
   padding: 0.8rem 2rem;
@@ -300,6 +300,39 @@ body {
 }
 .boton-volver.oculto {
   display: none;
+}
+
+/* ---------- BOTÓN "VOLVER" FLOTANTE ----------
+   Vive fuera de #capa-proceso: aparece pequeño, en la esquina
+   superior izquierda, mientras el usuario explora libremente la
+   constelación (zoom/pan ya están activos en ese momento porque
+   #capa-proceso está oculta). Siempre necesita su propio
+   pointer-events: auto, ya que no depende del estado de ninguna
+   capa padre. */
+.boton-volver-flotante {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 30;
+  padding: 0.5rem 1.1rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 30px;
+  color: rgba(255,255,255,0.85);
+  font-family: 'Anonymous Pro', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: opacity 0.6s ease, background 0.3s ease, transform 0.2s ease;
+}
+.boton-volver-flotante:hover {
+  background: rgba(255,255,255,0.18);
+  transform: translateY(-1px);
+}
+.boton-volver-flotante.oculto {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ---------- GUÍA ---------- */

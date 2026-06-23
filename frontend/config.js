@@ -48,12 +48,19 @@ export const DISPERSION = 280;
 // sin contexto y para poder ajustar el ritmo de la animación
 // desde un solo lugar.
 export const TIEMPOS = {
+  // Cuánto sigue corriendo la animación de colores aleatorios DESPUÉS
+  // de recibir la respuesta del backend, antes de fijar el color
+  // definitivo. Es puro dramatismo: el backend ya sabe la categoría,
+  // pero la pantalla se toma su tiempo para "decidir" frente al usuario.
+  SUSPENSO_COLORES: 2200,
   // Cuánto se muestra el mensaje "se ha convertido en estrella"
   // antes de revelar la categoría/emoción.
-  MENSAJE_CONVERSION: 2500,
-  // Cuánto tiempo se deja la nueva estrella visible en la
-  // constelación antes de ofrecer el botón "Volver".
-  OBSERVAR_ESTRELLA: 6000,
+  MENSAJE_CONVERSION: 3000,
+  // Cuánto tiempo se deja visible el resultado (categoría/emoción)
+  // antes de ocultarlo y pasar a modo "exploración libre": en ese
+  // punto se libera el pan/zoom de la cámara y aparece el botón
+  // flotante de "Volver" en la esquina.
+  MOSTRAR_RESULTADO: 6000,
   // Duración del parpadeo rojo cuando el campo está vacío.
   PARPADEO_ERROR_INPUT: 1200,
   // Cuánto tarda en ocultarse la guía de exploración tras volver

@@ -67,18 +67,26 @@
       <p id="resultado-emocion"></p>
     </div>
 
-    <!-- Botones estáticos: existen siempre en el DOM, solo se
-         muestran/ocultan con la clase .oculto, igual que el resto
-         de capas. Esto evita crear/destruir nodos dinámicamente
-         y los bugs de listeners huérfanos que eso puede provocar. -->
-    <button id="boton-volver" class="boton-volver oculto" type="button">
-      ← Volver a escribir
-    </button>
-
+    <!-- El botón Reintentar sí vive dentro de capa-proceso: solo
+         aparece en caso de error, y en ese caso queremos que siga
+         bloqueando la exploración (no hay nada útil que explorar
+         todavía, la huella no se llegó a procesar). -->
     <button id="boton-reintentar" class="boton-volver oculto" type="button">
       Reintentar
     </button>
   </section>
+
+  <!--
+    Botón "Volver", pequeño y flotante en una esquina.
+    Vive FUERA de #capa-proceso a propósito: cuando el resultado
+    termina de mostrarse, ocultamos toda #capa-proceso (eso libera
+    el pan/zoom de la cámara automáticamente) pero este botón sigue
+    visible e independiente, para volver al formulario cuando el
+    usuario quiera, después de explorar la constelación.
+  -->
+  <button id="boton-volver" class="boton-volver-flotante oculto" type="button">
+    ← Volver
+  </button>
 
   <!-- GUÍA DE EXPLORACIÓN -->
   <p id="guia-exploracion" class="oculto">

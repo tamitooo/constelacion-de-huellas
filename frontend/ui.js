@@ -114,15 +114,37 @@ export async function manejarEnvio(e, callbackRecalcular) {
   try {
     const datos = await enviarHuella(texto);
 
+    // ── Suspenso: dejamos que la animación de colores siga
+    // corriendo un rato más, aunque ya tengamos la respuesta,
+    // para dar dramatismo antes de revelar el color definitivo. ──
+    await pausa(TIEMPOS.SUSPENSO_COLORES);
+
     detenerAnimacionBrillo();
+
+    // Fijamos la estrella naciente en su color definitivo (el de
+    // su categoría/emoción real) en vez de dejarla en el último
+    // color aleatorio de la animación. Así, mientras se lee el
+    // mensaje de conversión, la estrella ya "es" lo que será.
+    const colorFinal = datos.color || '#f0eae0';
+    const factorBrilloFinal = Math.pow(0.8, 1.8);
+    temporal.pixels.forEach(pixel => {
+      const blur1 = temporal.pixelSize * 2 * factorBrilloFinal;
+      const blur2 = temporal.pixelSize * 5 * factorBrilloFinal;
+      pixel.style.background = colorFinal;
+      pixel.style.boxShadow = `0 0 ${blur1}px ${colorFinal}, 0 0 ${blur2}px ${colorFinal}`;
+    });
 
     // ── Paso 4: Mensaje "convertida en estrella" ──
     elementos.textoProceso.textContent = '✨ Tu huella se ha convertido en estrella...';
     await pausa(TIEMPOS.MENSAJE_CONVERSION);
 
     // ── Paso 5: Mostrar categoría y emoción ──
+    // Borramos el mensaje de proceso: a partir de aquí solo se ve
+    // la estrella real junto con su categoría/emoción, sin texto
+    // de "convertida en estrella" arriba.
+    elementos.textoProceso.textContent = '';
     elementos.resultadoCat.textContent = datos.categoria || 'Huella';
-    elementos.resultadoCat.style.color = datos.color || '#f0eae0';
+    elementos.resultadoCat.style.color = colorFinal;
     elementos.resultadoEmo.textContent = datos.emocion ? `— ${datos.emocion} —` : '';
     elementos.resultadoHuella.classList.remove('oculto');
 
@@ -134,12 +156,18 @@ export async function manejarEnvio(e, callbackRecalcular) {
     elementos.estrellaNaciente.classList.add('oculto');
     if (viewportRef) viewportRef.classList.remove('ocultar-constelacion');
 
-    // Dar tiempo para observar la nueva estrella antes de ofrecer volver.
-    await pausa(TIEMPOS.OBSERVAR_ESTRELLA);
+    // El resultado se queda fijo en pantalla un rato para que se
+    // pueda leer con calma...
+    await pausa(TIEMPOS.MOSTRAR_RESULTADO);
 
-    // ── Paso 8: Mostrar botón "Volver" ──
+    // ── Paso 8: Pasar a modo "exploración libre" ──
+    // Ocultamos TODA capa-proceso (no solo el resultado): esto es
+    // lo que libera el pan/zoom de la cámara, ya que camera.js
+    // solo permite arrastrar cuando capa-proceso tiene `.oculto`.
+    // El botón "Volver" vive fuera de esta capa, así que sigue
+    // visible y clickeable mientras el usuario explora.
+    elementos.capaProceso.classList.add('oculto');
     elementos.botonVolver.classList.remove('oculto');
-    elementos.botonVolver.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   } catch (error) {
     console.error('Error al enviar la huella:', error);

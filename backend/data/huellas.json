@@ -414,5 +414,65 @@
     "brillo": 2,
     "zona": "Centro",
     "fecha": "2026-06-23T04:09:20.414Z"
+  },
+  {
+    "id": 29,
+    "texto": "estoy enamorada de un chico que no me hace caso desde 2024",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T04:19:55.052Z"
+  },
+  {
+    "id": 30,
+    "texto": "el arte me llevo a un nuevo mundo por descubrir",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T04:26:48.980Z"
+  },
+  {
+    "id": 31,
+    "texto": "estoy aprendiendo a manejar",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T04:27:29.716Z"
+  },
+  {
+    "id": 32,
+    "texto": "no recuerdo mitad de mi vida",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T04:29:48.478Z"
+  },
+  {
+    "id": 33,
+    "texto": "si",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T04:40:16.555Z"
   }
 ]
