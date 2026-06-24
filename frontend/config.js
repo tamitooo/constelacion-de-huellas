@@ -7,12 +7,24 @@ export const FETCH_TIMEOUT_MS = 15000;
 
 export const CONEXION = {
   SCORE_MINIMO: 3,
-  SCORE_CATEGORIA: 3,
+  // Bajado de 3 a 2: antes, compartir SOLO categoría ya alcanzaba
+  // el umbral mínimo (3) y conectaba el par sin más. Con muchas
+  // huellas de la misma categoría eso generaba demasiadas líneas
+  // ("telaraña"). Ahora categoría sola no basta — necesita venir
+  // acompañada de emoción, palabras clave o cercanía para conectar.
+  SCORE_CATEGORIA: 2,
   SCORE_EMOCION: 2,
   SCORE_PALABRAS_CLAVE: 2,
   SCORE_DISTANCIA: 1,
   DIST_MAX: 280,
-  MAX_POR_ESTRELLA: 4,
+  // Mínimo de palabras clave compartidas para que SCORE_PALABRAS_CLAVE
+  // se otorgue. Antes bastaba con 1 (a veces una palabra genérica
+  // sin relación real de fondo); ahora se exige una coincidencia
+  // más sustancial.
+  MIN_PALABRAS_COMPARTIDAS: 2,
+  // Bajado de 4 a 3: menos líneas por estrella, constelación más
+  // legible y menos "telaraña" en categorías muy pobladas.
+  MAX_POR_ESTRELLA: 3,
 };
 
 export const COLOR_EMOCION = {

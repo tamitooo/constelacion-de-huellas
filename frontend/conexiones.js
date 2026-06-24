@@ -34,7 +34,7 @@ export function recalcularConexiones(estrellas) {
 
       if (a.categoria === b.categoria) score += CONEXION.SCORE_CATEGORIA;
       if (a.emocion && b.emocion && a.emocion === b.emocion) score += CONEXION.SCORE_EMOCION;
-      if (palabrasCompartidas(a, b) > 0) score += CONEXION.SCORE_PALABRAS_CLAVE;
+      if (palabrasCompartidas(a, b) >= CONEXION.MIN_PALABRAS_COMPARTIDAS) score += CONEXION.SCORE_PALABRAS_CLAVE;
       if (distancia(a, b) < CONEXION.DIST_MAX) score += CONEXION.SCORE_DISTANCIA;
 
       if (score >= CONEXION.SCORE_MINIMO) {
