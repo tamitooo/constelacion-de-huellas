@@ -1,5 +1,6 @@
 // estrellas.js
 import { ZONA_OFFSET, DISPERSION } from './config.js';
+import { animarNuevaEstrella } from './animacion-estrella.js';
 
 let capaEstrellas = null;
 let estrellas = [];
@@ -15,8 +16,8 @@ const VIEWPORT_H = 4000;
 
 export function posicionPorCategoria(categoria, tamanoNueva) {
   const offset = ZONA_OFFSET[categoria] || { dx: 0, dy: 0 };
-  const cx = VIEWPORT_W / 2;
-  const cy = VIEWPORT_H / 2;
+ const cx = window.innerWidth  / 2;
+  const cy = window.innerHeight / 2;
 
   for (let intento = 0; intento < INTENTOS_POSICION; intento++) {
     // Escala más agresiva: cada 3 intentos fallidos expande un 50%
@@ -156,6 +157,9 @@ export function crearEstrellaTemporal(colorInicial = '#FFD700', intensidadInicia
   return { element: contenedorGiro, elementoGiro: contenedorGiro, pixels, pixelSize };
 }
 
+
+// Nueva función: solo registra y pinta, sin animación.
+// Se usa al CARGAR la constelación al inicio.
 export function anadirEstrella(datosBackend, callbackRecalcular) {
   const tamano = (datosBackend.intensidad || 3) * 10 + 6;
   const pos = posicionPorCategoria(datosBackend.categoria, tamano);
@@ -177,6 +181,44 @@ export function anadirEstrella(datosBackend, callbackRecalcular) {
   capaEstrellas.appendChild(el);
 
   if (callbackRecalcular) callbackRecalcular();
+  return estrella;
+}
 
+// Nueva función: registra la posición, ESPERA la animación, luego pinta el DOM.
+// Se usa al enviar una huella nueva desde el formulario.
+export async function anadirEstrellaAnimada(datosBackend, callbackRecalcular, camera) {
+  const tamano = (datosBackend.intensidad || 3) * 10 + 6;
+  const pos = posicionPorCategoria(datosBackend.categoria, tamano);
+
+  const estrella = {
+    id: datosBackend.id || Date.now(),
+    x: pos.x,
+    y: pos.y,
+    color: datosBackend.color || '#ffd700',
+    tamano,
+    categoria: datosBackend.categoria || 'Huella',
+    emocion: datosBackend.emocion || '',
+    palabrasClave: datosBackend.palabrasClave || [],
+    intensidad: datosBackend.intensidad || 3,
+  };
+
+  // Registrar en el array YA para que las conexiones la incluyan,
+  // pero el elemento DOM aparece solo al final de la animación.
+  estrellas.push(estrella);
+
+  // Lanzar animación (zoom → corazón → vuelo → aterrizaje)
+  await animarNuevaEstrella({
+    color: estrella.color,
+    destinoX: estrella.x,
+    destinoY: estrella.y,
+    camera,
+    intensidad: estrella.intensidad,
+  });
+
+  // Solo ahora pintamos el DOM definitivo
+  const el = crearEstrellaDOM(estrella);
+  capaEstrellas.appendChild(el);
+
+  if (callbackRecalcular) callbackRecalcular();
   return estrella;
 }

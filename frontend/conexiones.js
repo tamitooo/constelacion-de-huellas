@@ -74,28 +74,59 @@ export function recalcularConexiones(estrellas) {
   }));
 }
 
-export function dibujarConexiones(ctx, capaConexiones) {
+// Centro de transform-origin del #universo-viewport (ver style.css:
+// transform-origin: center center, sobre un viewport de 4000x4000px
+// posicionado en top:0;left:0). Las estrellas (divs dentro del
+// viewport) heredan el transform CSS automáticamente; el canvas de
+// conexiones vive FUERA del viewport a propósito, así que debe
+// replicar manualmente la misma transformación para que las líneas
+// coincidan con las estrellas en cualquier estado de pan/zoom.
+const ORIGEN_TRANSFORM_X = 2000;
+const ORIGEN_TRANSFORM_Y = 2000;
+
+export function dibujarConexiones(ctx, capaConexiones, camera) {
   ctx.clearRect(0, 0, capaConexiones.width, capaConexiones.height);
+
+  // Offset porque el canvas arranca en -1500px respecto al viewport
+  const ox = parseInt(capaConexiones.style.left) * -1 || 0;
+  const oy = parseInt(capaConexiones.style.top)  * -1 || 0;
+
+  const zoom = camera ? camera._zoom : 1;
+  const camX = camera ? camera._x : 0;
+  const camY = camera ? camera._y : 0;
+
+  // Aplica la misma transformación translate+scale (con origen en
+  // el centro del viewport) que CSS aplica a las estrellas, para
+  // convertir una coordenada "neutra" de estrella en su posición
+  // real en pantalla bajo el estado actual de cámara.
+  function aPantalla(x, y) {
+    const px = ORIGEN_TRANSFORM_X + (x - ORIGEN_TRANSFORM_X) * zoom + camX;
+    const py = ORIGEN_TRANSFORM_Y + (y - ORIGEN_TRANSFORM_Y) * zoom + camY;
+    return { px, py };
+  }
 
   for (const c of conexiones) {
     c.opacity += (c.opacityTarget - c.opacity) * 0.025;
-
     if (c.opacity < 0.005) continue;
 
-    const colorLinea = '#ffffff';
+    const pa = aPantalla(c.a.x, c.a.y);
+    const pb = aPantalla(c.b.x, c.b.y);
 
-    const grad = ctx.createLinearGradient(c.a.x, c.a.y, c.b.x, c.b.y);
-    grad.addColorStop(0, hexAColor(colorLinea, 0));
-    grad.addColorStop(0.25, hexAColor(colorLinea, c.opacity));
-    grad.addColorStop(0.5, hexAColor(colorLinea, c.opacity * 1.4));
-    grad.addColorStop(0.75, hexAColor(colorLinea, c.opacity));
-    grad.addColorStop(1, hexAColor(colorLinea, 0));
+    const ax = pa.px + ox, ay = pa.py + oy;
+    const bx = pb.px + ox, by = pb.py + oy;
+
+    const grad = ctx.createLinearGradient(ax, ay, bx, by);
+    grad.addColorStop(0,    hexAColor('#ffffff', 0));
+    grad.addColorStop(0.25, hexAColor('#ffffff', c.opacity));
+    grad.addColorStop(0.5,  hexAColor('#ffffff', c.opacity * 1.4));
+    grad.addColorStop(0.75, hexAColor('#ffffff', c.opacity));
+    grad.addColorStop(1,    hexAColor('#ffffff', 0));
 
     ctx.beginPath();
-    ctx.moveTo(c.a.x, c.a.y);
-    ctx.lineTo(c.b.x, c.b.y);
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(bx, by);
     ctx.strokeStyle = grad;
-    ctx.lineWidth = 0.6;
+    ctx.lineWidth = 0.6 * zoom;
     ctx.lineCap = 'round';
     ctx.stroke();
   }

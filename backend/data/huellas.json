@@ -14,5 +14,165 @@
     "brillo": 3,
     "zona": "Centro",
     "fecha": "2026-06-23T20:52:52.037Z"
+  },
+  {
+    "id": 2,
+    "texto": "si",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Neutral",
+    "intensidad": 1,
+    "palabrasClave": [
+      "condición"
+    ],
+    "color": "#CCCCCC",
+    "brillo": 1,
+    "zona": "Centro",
+    "fecha": "2026-06-23T20:56:26.648Z"
+  },
+  {
+    "id": 3,
+    "texto": "hola",
+    "categoria": "Amigos",
+    "emocion": "Neutral",
+    "intensidad": 1,
+    "palabrasClave": [
+      "saludo"
+    ],
+    "color": "#CCCCCC",
+    "brillo": 1,
+    "zona": "Este",
+    "fecha": "2026-06-23T21:18:30.710Z"
+  },
+  {
+    "id": 4,
+    "texto": "f",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T21:20:08.913Z"
+  },
+  {
+    "id": 5,
+    "texto": "no",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T21:27:42.105Z"
+  },
+  {
+    "id": 6,
+    "texto": "xd",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T21:38:07.400Z"
+  },
+  {
+    "id": 7,
+    "texto": "si",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [
+      "posibilidad",
+      "futuro",
+      "aceptación"
+    ],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-23T23:57:23.981Z"
+  },
+  {
+    "id": 8,
+    "texto": "si",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-24T00:04:53.815Z"
+  },
+  {
+    "id": 9,
+    "texto": "si",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-24T00:27:08.011Z"
+  },
+  {
+    "id": 10,
+    "texto": "no",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Neutral",
+    "intensidad": 1,
+    "palabrasClave": [
+      "no",
+      "rechazo",
+      "negacion"
+    ],
+    "color": "#CCCCCC",
+    "brillo": 1,
+    "zona": "Centro",
+    "fecha": "2026-06-24T00:31:48.488Z"
+  },
+  {
+    "id": 11,
+    "texto": "si",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 3,
+    "palabrasClave": [
+      "afirmación",
+      "posibilidad",
+      "futuro"
+    ],
+    "color": "#FFFFFF",
+    "brillo": 3,
+    "zona": "Centro",
+    "fecha": "2026-06-24T00:36:26.169Z"
+  },
+  {
+    "id": 12,
+    "texto": "ji",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-24T00:37:40.892Z"
+  },
+  {
+    "id": 13,
+    "texto": "fi",
+    "categoria": "Crecimiento Personal",
+    "emocion": "Esperanza",
+    "intensidad": 2,
+    "palabrasClave": [],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-24T00:48:30.660Z"
   }
 ]

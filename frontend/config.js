@@ -29,19 +29,16 @@ export const COLOR_EMOCION = {
 // Sin este ajuste, zonas vecinas (ej. Familia y Amigos) terminaban
 // solapándose y mezclando estrellas de categorías distintas.
 export const ZONA_OFFSET = {
-  'Familia':             { dx:    0, dy: -600 },
-  'Amigos':              { dx:  650, dy: -200 },
-  'Amor':                { dx:  550, dy:  450 },
-  'Estudios':            { dx: -550, dy:  450 },
-  'Crecimiento Personal':{ dx: -650, dy: -200 },
+  'Familia':              { dx:   0, dy: -180 },
+  'Amigos':               { dx:  200, dy:  -80 },
+  'Amor':                 { dx:  180, dy:  150 },
+  'Estudios':             { dx: -180, dy:  150 },
+  'Crecimiento Personal': { dx: -200, dy:  -80 },
 };
 
-// Lado (px) del área cuadrada donde se sortea la posición de cada
-// estrella dentro de su zona de categoría. Se subió de 140 a 280:
-// con estrellas grandes (~56px) y varias en la misma categoría,
-// 140px dejaba muy poco margen y el algoritmo de anti-colisión
-// fallaba tras sus 20 intentos, generando warnings en consola.
-export const DISPERSION = 600;
+export const DISPERSION = 160;
+
+
 
 // ── Tiempos del flujo de envío de una huella (ms) ──────────────
 // Centralizados aquí para que ui.js no tenga números sueltos

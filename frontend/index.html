@@ -9,29 +9,23 @@
 </head>
 <body>
 
-  <!-- UNIVERSO: viewport con pan y zoom -->
+  <!-- UNIVERSO: contenedor fijo a pantalla completa -->
   <div id="universo-contenedor">
+
+    <!-- VIEWPORT: este es el que la cámara mueve/escala (pan y zoom) -->
     <div id="universo-viewport">
-
-      <!-- Fondo (imagen reemplazable desde style.css) -->
       <div id="fondo-espacial" aria-hidden="true"></div>
-
-      <!--
-        ════════════════════════════════════════════════
-        CANVAS DE CONEXIONES
-        ────────────────────────────────────────────────
-        Vive DENTRO del viewport para que las líneas
-        se transformen junto con las estrellas (pan/zoom).
-        Se dibuja ANTES que capa-estrellas para que las
-        estrellas queden siempre encima de las aristas.
-        ════════════════════════════════════════════════
-      -->
-      <canvas id="capa-conexiones" aria-hidden="true"></canvas>
-
-      <!-- Estrellas DOM (pixeladas, con brillo) -->
       <div id="capa-estrellas"></div>
-
     </div>
+
+    <!--
+      CANVAS DE CONEXIONES — vive FUERA del viewport, a propósito.
+      Las estrellas guardan coordenadas de ventana (no del viewport
+      transformado), así que el canvas también debe ser fijo en
+      pantalla para que las líneas coincidan con las estrellas.
+    -->
+    <canvas id="capa-conexiones" aria-hidden="true"></canvas>
+
   </div>
 
   <!-- FORMULARIO -->
@@ -59,29 +53,28 @@
       <p id="resultado-categoria"></p>
       <p id="resultado-emocion"></p>
     </div>
-
-    <!-- El botón Reintentar sí vive dentro de capa-proceso: solo
-         aparece en caso de error, y en ese caso queremos que siga
-         bloqueando la exploración (no hay nada útil que explorar
-         todavía, la huella no se llegó a procesar). -->
     <button id="boton-reintentar" class="boton-volver oculto" type="button">
       Reintentar
     </button>
   </section>
 
-  <!--
-    Botón "Volver", pequeño y flotante en una esquina.
-    Vive FUERA de #capa-proceso a propósito: cuando el resultado
-    termina de mostrarse, ocultamos toda #capa-proceso (eso libera
-    el pan/zoom de la cámara automáticamente) pero este botón sigue
-    visible e independiente, para volver al formulario cuando el
-    usuario quiera, después de explorar la constelación.
-  -->
   <button id="boton-volver" class="boton-volver-flotante oculto" type="button">
     ← Volver
   </button>
 
-  <!-- GUÍA DE EXPLORACIÓN -->
+  <!--
+    CONTROLES DE ZOOM — alternativa a la rueda/trackpad, más
+    predecible (cada click = un paso fijo). Comparten visibilidad
+    con #boton-volver: solo aparecen durante la exploración libre
+    de la constelación (ui.js los muestra/oculta junto al botón
+    "Volver").
+  -->
+  <div id="controles-zoom" class="oculto">
+    <button id="boton-zoom-mas" type="button" aria-label="Acercar">+</button>
+    <button id="boton-zoom-reset" type="button" aria-label="Restablecer zoom">⟳</button>
+    <button id="boton-zoom-menos" type="button" aria-label="Alejar">−</button>
+  </div>
+
   <p id="guia-exploracion" class="oculto">
     Arrastra para explorar · desplázate para acercar
   </p>
