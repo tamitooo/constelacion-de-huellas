@@ -125,9 +125,22 @@ async function init() {
   camera.targetY = 0; camera._y = 0;
   camera.targetZoom = 1; camera._zoom = 1;
 
-  const nodes = await cargarConstelacion();
-  for (const node of nodes) {
-    anadirEstrella(node, recalcularYActualizar);
+  // Si cargarConstelacion() falla (backend caído, red, etc.), antes
+  // esto interrumpía init() por completo: ningún listener quedaba
+  // registrado (ni el formulario, ni pan/zoom, ni los botones), así
+  // que la app entera se quedaba muda y sin ningún aviso visible —
+  // solo un error en la consola que el usuario normal nunca ve.
+  // Con el try/catch, si falla la carga inicial seguimos adelante:
+  // la constelación arranca vacía (en vez de no arrancar nada) y el
+  // usuario puede seguir escribiendo y enviando una huella nueva.
+  try {
+    const nodes = await cargarConstelacion();
+    for (const node of nodes) {
+      anadirEstrella(node, recalcularYActualizar);
+    }
+  } catch (error) {
+    console.error('No se pudo cargar la constelación inicial:', error);
+    tituloPoetico.textContent = '✧ No se pudo cargar tu constelación, pero puedes seguir escribiendo ✧';
   }
 
   form.addEventListener('submit', (e) => manejarEnvio(e, recalcularYActualizar));

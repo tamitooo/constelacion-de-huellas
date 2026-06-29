@@ -1,202 +1,690 @@
 [
   {
     "id": 1,
-    "texto": "si",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Esperanza",
-    "intensidad": 3,
+    "texto": "La primera vez que vi llorar a mi padre. En ese segundo se rompió el mito del héroe invencible y nació en mí la urgencia de proteger a los míos.",
+    "categoria": "Familia y Raíces",
+    "emocion": "Amor",
+    "intensidad": 5,
     "palabrasClave": [
-      "afirmación",
-      "posibilidad",
-      "futuro"
+      "padres",
+      "vulnerabilidad",
+      "madurez"
     ],
-    "color": "#FFFFFF",
-    "brillo": 3,
-    "zona": "Centro",
-    "fecha": "2026-06-23T20:52:52.037Z"
+    "color": "#BC587B",
+    "brillo": 5,
+    "zona": "Norte",
+    "fecha": "2026-06-24T10:00:00.000Z"
   },
   {
     "id": 2,
-    "texto": "si",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Neutral",
-    "intensidad": 1,
+    "texto": "Las carcajadas en la mesa vieja de la abuela, con todos vivos y juntos. Ese estallido de alegría quedó grabado como mi definición personal de hogar.",
+    "categoria": "Familia y Raíces",
+    "emocion": "Alegría",
+    "intensidad": 5,
     "palabrasClave": [
-      "condición"
+      "hogar",
+      "abuela",
+      "infancia"
     ],
-    "color": "#CCCCCC",
-    "brillo": 1,
-    "zona": "Centro",
-    "fecha": "2026-06-23T20:56:26.648Z"
+    "color": "#ffedab",
+    "brillo": 5,
+    "zona": "Norte",
+    "fecha": "2026-06-24T10:12:00.000Z"
   },
   {
     "id": 3,
-    "texto": "hola",
-    "categoria": "Amigos",
-    "emocion": "Neutral",
-    "intensidad": 1,
+    "texto": "Ver las manos cansadas y agrietadas de mi madre trabajar sin descanso. Su sacrificio silencioso me enseñó el verdadero peso de la entrega.",
+    "categoria": "Familia y Raíces",
+    "emocion": "Gratitud",
+    "intensidad": 4,
     "palabrasClave": [
-      "saludo"
+      "madre",
+      "sacrificio",
+      "ejemplo"
     ],
-    "color": "#CCCCCC",
-    "brillo": 1,
-    "zona": "Este",
-    "fecha": "2026-06-23T21:18:30.710Z"
+    "color": "#00CED1",
+    "brillo": 4,
+    "zona": "Norte",
+    "fecha": "2026-06-24T10:25:00.000Z"
   },
   {
     "id": 4,
-    "texto": "f",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Esperanza",
-    "intensidad": 2,
-    "palabrasClave": [],
-    "color": "#FFFFFF",
-    "brillo": 2,
-    "zona": "Centro",
-    "fecha": "2026-06-23T21:20:08.913Z"
+    "texto": "Aquella última Navidad antes de que la familia se fracturara por herencias. El frío en el ambiente me enseñó lo frágil que es la sangre.",
+    "categoria": "Familia y Raíces",
+    "emocion": "Tristeza",
+    "intensidad": 4,
+    "palabrasClave": [
+      "fractura",
+      "distancia",
+      "desilusión"
+    ],
+    "color": "#3A4FC5",
+    "brillo": 4,
+    "zona": "Norte",
+    "fecha": "2026-06-24T10:38:00.000Z"
   },
   {
     "id": 5,
-    "texto": "no",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Esperanza",
-    "intensidad": 2,
-    "palabrasClave": [],
-    "color": "#FFFFFF",
-    "brillo": 2,
-    "zona": "Centro",
-    "fecha": "2026-06-23T21:27:42.105Z"
+    "texto": "El olor a tierra mojada en el patio de mi infancia. Cada vez que llueve, regreso a ser ese niño que no le temía a nada.",
+    "categoria": "Familia y Raíces",
+    "emocion": "Nostalgia",
+    "intensidad": 3,
+    "palabrasClave": [
+      "patio",
+      "lluvia",
+      "origen"
+    ],
+    "color": "#3A4FC5",
+    "brillo": 3,
+    "zona": "Norte",
+    "fecha": "2026-06-24T10:50:00.000Z"
   },
   {
     "id": 6,
-    "texto": "xd",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Esperanza",
-    "intensidad": 2,
-    "palabrasClave": [],
-    "color": "#FFFFFF",
-    "brillo": 2,
-    "zona": "Centro",
-    "fecha": "2026-06-23T21:38:07.400Z"
+    "texto": "Cuando tuvimos que vender la casa familiar por deudas y nos abrazamos en el piso vacío. Descubrí que el hogar no son las paredes, sino nosotros.",
+    "categoria": "Familia y Raíces",
+    "emocion": "Resiliencia",
+    "intensidad": 5,
+    "palabrasClave": [
+      "mudanza",
+      "unión",
+      "fuerza"
+    ],
+    "color": "#8A2BE2",
+    "brillo": 5,
+    "zona": "Norte",
+    "fecha": "2026-06-24T11:02:00.000Z"
   },
   {
     "id": 7,
-    "texto": "si",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Esperanza",
-    "intensidad": 2,
+    "texto": "Un reclamo violento de mi hermano que desenterró traumas viejos. Esa pelea me obligó a poner límites duros por mi propia salud mental.",
+    "categoria": "Familia y Raíces",
+    "emocion": "Ira",
+    "intensidad": 4,
     "palabrasClave": [
-      "posibilidad",
-      "futuro",
-      "aceptación"
+      "límites",
+      "hermano",
+      "conflicto"
     ],
-    "color": "#FFFFFF",
-    "brillo": 2,
-    "zona": "Centro",
-    "fecha": "2026-06-23T23:57:23.981Z"
+    "color": "#DC143C",
+    "brillo": 4,
+    "zona": "Norte",
+    "fecha": "2026-06-24T11:15:00.000Z"
   },
   {
     "id": 8,
-    "texto": "si",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Esperanza",
+    "texto": "Sentarme solo en el viejo sillón de mi abuelo meses después de su partida, asimilando en silencio los rasgos físicos que heredé de él.",
+    "categoria": "Familia y Raíces",
+    "emocion": "Neutral",
     "intensidad": 2,
-    "palabrasClave": [],
+    "palabrasClave": [
+      "herencia",
+      "silencio",
+      "linaje"
+    ],
     "color": "#FFFFFF",
     "brillo": 2,
-    "zona": "Centro",
-    "fecha": "2026-06-24T00:04:53.815Z"
+    "zona": "Norte",
+    "fecha": "2026-06-24T11:28:00.000Z"
   },
   {
     "id": 9,
-    "texto": "si",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Esperanza",
-    "intensidad": 2,
-    "palabrasClave": [],
-    "color": "#FFFFFF",
-    "brillo": 2,
-    "zona": "Centro",
-    "fecha": "2026-06-24T00:27:08.011Z"
+    "texto": "Aparecieron en mi puerta a las 3 a.m. con comida cuando colapsé emocionalmente. Esos brazos me salvaron de caer al abismo.",
+    "categoria": "Amistad y Complicidad",
+    "emocion": "Amor",
+    "intensidad": 5,
+    "palabrasClave": [
+      "rescate",
+      "lealtad",
+      "crisis"
+    ],
+    "color": "#BC587B",
+    "brillo": 5,
+    "zona": "Este",
+    "fecha": "2026-06-24T11:40:00.000Z"
   },
   {
     "id": 10,
-    "texto": "no",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Neutral",
-    "intensidad": 1,
+    "texto": "Aquella noche entera corriendo bajo la tormenta con mi mejor amigo, riendo sin control. Ahí supe que la vida valía la pena compartida.",
+    "categoria": "Amistad y Complicidad",
+    "emocion": "Alegría",
+    "intensidad": 4,
     "palabrasClave": [
-      "no",
-      "rechazo",
-      "negacion"
+      "tormenta",
+      "risa",
+      "libertad"
     ],
-    "color": "#CCCCCC",
-    "brillo": 1,
-    "zona": "Centro",
-    "fecha": "2026-06-24T00:31:48.488Z"
+    "color": "#ffedab",
+    "brillo": 4,
+    "zona": "Este",
+    "fecha": "2026-06-24T11:52:00.000Z"
   },
   {
     "id": 11,
-    "texto": "si",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Esperanza",
+    "texto": "Sostener el llanto de mi amigo tras su despido injusto. Ver su vulnerabilidad me quitó el miedo a mostrar mis propias debilidades.",
+    "categoria": "Amistad y Complicidad",
+    "emocion": "Empatía",
+    "intensidad": 4,
+    "palabrasClave": [
+      "apoyo",
+      "llanto",
+      "espejo"
+    ],
+    "color": "#00CED1",
+    "brillo": 4,
+    "zona": "Este",
+    "fecha": "2026-06-24T12:05:00.000Z"
+  },
+  {
+    "id": 12,
+    "texto": "El abrazo de despedida en el aeropuerto. Me miró a los ojos y me dijo: 'vuela alto'. Su fe ciega en mí fue el motor de mi viaje.",
+    "categoria": "Amistad y Complicidad",
+    "emocion": "Gratitud",
+    "intensidad": 5,
+    "palabrasClave": [
+      "despedida",
+      "confianza",
+      "vuelo"
+    ],
+    "color": "#00CED1",
+    "brillo": 5,
+    "zona": "Este",
+    "fecha": "2026-06-24T12:18:00.000Z"
+  },
+  {
+    "id": 13,
+    "texto": "El día que el orgullo ganó y dejamos de hablarnos sin motivos reales. El silencio de su ausencia me enseñó cuánto cuesta el ego.",
+    "categoria": "Amistad y Complicidad",
+    "emocion": "Tristeza",
     "intensidad": 3,
     "palabrasClave": [
-      "afirmación",
-      "posibilidad",
-      "futuro"
+      "orgullo",
+      "silencio",
+      "distancia"
+    ],
+    "color": "#3A4FC5",
+    "brillo": 3,
+    "zona": "Este",
+    "fecha": "2026-06-24T12:30:00.000Z"
+  },
+  {
+    "id": 14,
+    "texto": "Pasar por la esquina donde solíamos planear el futuro a los quince años. Sentir la melancolía de notar que ninguno cumplió lo prometido.",
+    "categoria": "Amistad y Complicidad",
+    "emocion": "Nostalgia",
+    "intensidad": 4,
+    "palabrasClave": [
+      "promesas",
+      "esquina",
+      "tiempo"
+    ],
+    "color": "#3A4FC5",
+    "brillo": 4,
+    "zona": "Este",
+    "fecha": "2026-06-24T12:42:00.000Z"
+  },
+  {
+    "id": 15,
+    "texto": "Descubrir que expuso mis secretos más íntimos para encajar en otro grupo. Esa traición reconfiguró mi forma de confiar para siempre.",
+    "categoria": "Amistad y Complicidad",
+    "emocion": "Ira",
+    "intensidad": 5,
+    "palabrasClave": [
+      "traición",
+      "decepción",
+      "coraza"
+    ],
+    "color": "#DC143C",
+    "brillo": 5,
+    "zona": "Este",
+    "fecha": "2026-06-24T12:55:00.000Z"
+  },
+  {
+    "id": 16,
+    "texto": "Un reencuentro casual diez años después. Ya no éramos los mismos, pero cruzamos una mirada de profundo respeto por lo que fuimos.",
+    "categoria": "Amidstad y Complicidad",
+    "emocion": "Neutral",
+    "intensidad": 2,
+    "palabrasClave": [
+      "reencuentro",
+      "madurez",
+      "azar"
+    ],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Este",
+    "fecha": "2026-06-24T13:08:00.000Z"
+  },
+  {
+    "id": 17,
+    "texto": "Recostar mi cabeza en su pecho y escuchar los latidos de su corazón. En ese instante exacto experimenté por primera vez la paz absoluta.",
+    "categoria": "Amor y Desamor",
+    "emocion": "Amor",
+    "intensidad": 5,
+    "palabrasClave": [
+      "paz",
+      "latidos",
+      "refugio"
+    ],
+    "color": "#BC587B",
+    "brillo": 5,
+    "zona": "Sur",
+    "fecha": "2026-06-24T13:20:00.000Z"
+  },
+  {
+    "id": 18,
+    "texto": "Aquel ataque de risa descontrolado en mitad del cine. Sentir que encajar a la perfección con la locura de alguien es un milagro.",
+    "categoria": "Amor y Desamor",
+    "emocion": "Alegría",
+    "intensidad": 4,
+    "palabrasClave": [
+      "risa",
+      "complicidad",
+      "milagro"
+    ],
+    "color": "#ffedab",
+    "brillo": 4,
+    "zona": "Sur",
+    "fecha": "2026-06-24T13:32:00.000Z"
+  },
+  {
+    "id": 19,
+    "texto": "El silencio denso en el auto cuando ambos sabíamos que nos amábamos, pero que ya no éramos buenos el uno para el otro. Aprendí a soltar doliendo.",
+    "categoria": "Amor y Desamor",
+    "emocion": "Tristeza",
+    "intensidad": 5,
+    "palabrasClave": [
+      "silencio",
+      "soltar",
+      "ruptura"
+    ],
+    "color": "#3A4FC5",
+    "brillo": 5,
+    "zona": "Sur",
+    "fecha": "2026-06-24T13:45:00.000Z"
+  },
+  {
+    "id": 20,
+    "texto": "Encontrar un viejo boleto de tren en el fondo de mi abrigo y recordar la calidez de su mano. Sonreí al notar que ya no dolía.",
+    "categoria": "Amor y Desamor",
+    "emocion": "Nostalgia",
+    "intensidad": 3,
+    "palabrasClave": [
+      "boleto",
+      "recuerdo",
+      "cicatriz"
+    ],
+    "color": "#3A4FC5",
+    "brillo": 3,
+    "zona": "Sur",
+    "fecha": "2026-06-24T13:58:00.000Z"
+  },
+  {
+    "id": 21,
+    "texto": "El primer despertar semanas después del quiebre, en el que su nombre no fue mi primer pensamiento. Ese día supe que iba a sobrevivir.",
+    "categoria": "Amor y Desamor",
+    "emocion": "Resiliencia",
+    "intensidad": 4,
+    "palabrasClave": [
+      "despertar",
+      "olvido",
+      "superación"
+    ],
+    "color": "#8A2BE2",
+    "brillo": 4,
+    "zona": "Sur",
+    "fecha": "2026-06-24T14:10:00.000Z"
+  },
+  {
+    "id": 22,
+    "texto": "Reconstruir mi concepto del amor desde las cenizas de una relación tóxica. Descubrí que el desamor me obligó a transformarme y amarme más.",
+    "categoria": "Amor y Desamor",
+    "emocion": "Transformación",
+    "intensidad": 5,
+    "palabrasClave": [
+      "cenizas",
+      "autoestima",
+      "renacer"
+    ],
+    "color": "#8A2BE2",
+    "brillo": 5,
+    "zona": "Sur",
+    "fecha": "2026-06-24T14:22:00.000Z"
+  },
+  {
+    "id": 23,
+    "texto": "El desprecio frío e indiferente en sus palabras finales. Ese veneno quemó mi ingenuidad y me transformó en alguien mucho más selectivo.",
+    "categoria": "Amor y Desamor",
+    "emocion": "Ira",
+    "intensidad": 4,
+    "palabrasClave": [
+      "desprecio",
+      "frialdad",
+      "coraza"
+    ],
+    "color": "#DC143C",
+    "brillo": 4,
+    "zona": "Sur",
+    "fecha": "2026-06-24T14:35:00.000Z"
+  },
+  {
+    "id": 24,
+    "texto": "Cerrar con llave la puerta del apartamento compartido, dejando las llaves adentro. Un punto final definitivo y administrativo a una era.",
+    "categoria": "Amor y Desamor",
+    "emocion": "Neutral",
+    "intensidad": 2,
+    "palabrasClave": [
+      "llaves",
+      "cierre",
+      "final"
+    ],
+    "color": "#FFFFFF",
+    "brillo": 2,
+    "zona": "Sur",
+    "fecha": "2026-06-24T14:48:00.000Z"
+  },
+  {
+    "id": 25,
+    "texto": "El instante exacto frente al lienzo en blanco en que la vocación se reveló nítida. Desde ese segundo supe quién era y hacia dónde iba.",
+    "categoria": "Aprendizaje y Transformación",
+    "emocion": "Alegría",
+    "intensidad": 5,
+    "palabrasClave": [
+      "vocación",
+      "revelación",
+      "destino"
+    ],
+    "color": "#ffedab",
+    "brillo": 5,
+    "zona": "Oeste",
+    "fecha": "2026-06-24T15:00:00.000Z"
+  },
+  {
+    "id": 26,
+    "texto": "Aquel mentor que miró mis manos temblorosas llenas de dudas y confió en mí. Su mirada de validación sepultó mi síndrome del impostor.",
+    "categoria": "Aprendizaje y Transformación",
+    "emocion": "Gratitud",
+    "intensidad": 4,
+    "palabrasClave": [
+      "mentor",
+      "confianza",
+      "seguridad"
+    ],
+    "color": "#00CED1",
+    "brillo": 4,
+    "zona": "Oeste",
+    "fecha": "2026-06-24T15:12:00.000Z"
+  },
+  {
+    "id": 27,
+    "texto": "Aquel 'no vas a poder' que me soltaron en la escuela. Me dolió la infancia entera, pero terminó convirtiéndose en el combustible de mi vida.",
+    "categoria": "Aprendizaje y Transformación",
+    "emocion": "Resiliencia",
+    "intensidad": 5,
+    "palabrasClave": [
+      "combustible",
+      "orgullo",
+      "desafío"
+    ],
+    "color": "#8A2BE2",
+    "brillo": 5,
+    "zona": "Oeste",
+    "fecha": "2026-06-24T15:25:00.000Z"
+  },
+  {
+    "id": 28,
+    "texto": "Cortarme el cabello al ras y mudar de piel tras años de sumisión. Ver un rostro desconocido en el espejo marcó el nacimiento de mi libertad.",
+    "categoria": "Aprendizaje y Transformación",
+    "emocion": "Transformación",
+    "intensidad": 5,
+    "palabrasClave": [
+      "espejo",
+      "libertad",
+      "identidad"
+    ],
+    "color": "#8A2BE2",
+    "brillo": 5,
+    "zona": "Oeste",
+    "fecha": "2026-06-24T15:38:00.000Z"
+  },
+  {
+    "id": 29,
+    "texto": "La rabia hirviente al presenciar una injusticia corporativa contra un compañero. Ese fuego quemó mi cobardía y me forzó a levantar la voz.",
+    "categoria": "Aprendizaje y Transformación",
+    "emocion": "Ira",
+    "intensidad": 4,
+    "palabrasClave": [
+      "injusticia",
+      "fuego",
+      "coraje"
+    ],
+    "color": "#DC143C",
+    "brillo": 4,
+    "zona": "Oeste",
+    "fecha": "2026-06-24T15:50:00.000Z"
+  },
+  {
+    "id": 30,
+    "texto": "El momento de vacío absoluto en la cima de una montaña, contemplando la inmensidad. Entendí lo pequeño que soy y el alivio que eso conlleva.",
+    "categoria": "Aprendizaje y Transformación",
+    "emocion": "Neutral",
+    "intensidad": 3,
+    "palabrasClave": [
+      "montaña",
+      "vacío",
+      "perspectiva"
+    ],
+    "color": "#FFFFFF",
+    "brillo": 3,
+    "zona": "Oeste",
+    "fecha": "2026-06-24T16:02:00.000Z"
+  },
+  {
+    "id": 31,
+    "texto": "Mantenerme firme defendiendo mi proyecto ante un comité hostil. Salí temblando, pero sabiendo que mi voz finalmente tenía peso.",
+    "categoria": "Aprendizaje y Transformación",
+    "emocion": "Resiliencia",
+    "intensidad": 4,
+    "palabrasClave": [
+      "carácter",
+      "defensa",
+      "firmeza"
+    ],
+    "color": "#8A2BE2",
+    "brillo": 4,
+    "zona": "Oeste",
+    "fecha": "2026-06-24T16:15:00.000Z"
+  },
+  {
+    "id": 32,
+    "texto": "El día que me miré al espejo y decidí perdonar de verdad todos los errores de mi pasado. Nació un amor propio inquebrantable.",
+    "categoria": "Aprendizaje y Transformación",
+    "emocion": "Amor",
+    "intensidad": 5,
+    "palabrasClave": [
+      "perdón",
+      "autoestima",
+      "paz"
+    ],
+    "color": "#BC587B",
+    "brillo": 5,
+    "zona": "Oeste",
+    "fecha": "2026-06-24T16:28:00.000Z"
+  },
+  {
+    "id": 33,
+    "texto": "Cruzar una mirada de absoluto dolor compartido con un extraño en la sala de espera del hospital. Sentir el lazo invisible del sufrimiento humano.",
+    "categoria": "Pérdida y Ausencia",
+    "emocion": "Empatía",
+    "intensidad": 4,
+    "palabrasClave": [
+      "hospital",
+      "dolor",
+      "conexión"
+    ],
+    "color": "#00CED1",
+    "brillo": 4,
+    "zona": "Centro",
+    "fecha": "2026-06-24T16:40:00.000Z"
+  },
+  {
+    "id": 34,
+    "texto": "El vacío ensordecedor e insoportable en la silla donde solías sentarte cada tarde. Tu ausencia física se convirtió en una presencia de plomo.",
+    "categoria": "Pérdida y Ausencia",
+    "emocion": "Tristeza",
+    "intensidad": 2,
+    "palabrasClave": [
+      "silla",
+      "ausencia",
+      "vacío"
+    ],
+    "color": "#3A4FC5",
+    "brillo": 2,
+    "zona": "Centro",
+    "fecha": "2026-06-24T16:52:00.000Z"
+  },
+  {
+    "id": 35,
+    "texto": "El eco flotante de tu risa atrapado para siempre entre las grietas de estas paredes. Una casa llena de recuerdos que se rehúsan a morir.",
+    "categoria": "Pérdida y Ausencia",
+    "emocion": "Nostalgia",
+    "intensidad": 4,
+    "palabrasClave": [
+      "risa",
+      "eco",
+      "memoria"
+    ],
+    "color": "#3A4FC5",
+    "brillo": 4,
+    "zona": "Centro",
+    "fecha": "2026-06-24T17:05:00.000Z"
+  },
+  {
+    "id": 36,
+    "texto": "El primer día que sonreí de verdad al recordar una de tus bromas en vez de romper a llorar. La herida empezó a transformarse en un altar.",
+    "categoria": "Pérdida y Ausencia",
+    "emocion": "Resiliencia",
+    "intensidad": 4,
+    "palabrasClave": [
+      "sonrisa",
+      "duelo",
+      "altar"
+    ],
+    "color": "#8A2BE2",
+    "brillo": 4,
+    "zona": "Centro",
+    "fecha": "2026-06-24T17:18:00.000Z"
+  },
+  {
+    "id": 37,
+    "texto": "Caminar por el mundo llevando tu dolorosa partida como un escudo de madurez. Tu muerte me arrancó la infancia, pero me dio un propósito.",
+    "categoria": "Pérdida y Ausencia",
+    "emocion": "Transformación",
+    "intensidad": 1,
+    "palabrasClave": [
+      "muerte",
+      "madurez",
+      "propósito"
+    ],
+    "color": "#8A2BE2",
+    "brillo": 1,
+    "zona": "Centro",
+    "fecha": "2026-06-24T17:30:00.000Z"
+  },
+  {
+    "id": 38,
+    "texto": "La furia muda y destructiva contra el universo por haber apagado tu luz tan pronto. Un grito ahogado que reconfiguró mi fe.",
+    "categoria": "Pérdida y Ausencia",
+    "emocion": "Ira",
+    "intensidad": 1,
+    "palabrasClave": [
+      "furia",
+      "universo",
+      "injusticia"
+    ],
+    "color": "#DC143C",
+    "brillo": 1,
+    "zona": "Centro",
+    "fecha": "2026-06-24T17:42:00.000Z"
+  },
+  {
+    "id": 39,
+    "texto": "Doblar tu ropa pausadamente y guardarla en cajas de cartón con un respeto casi litúrgico. El acto físico de ordenar los fragmentos del ayer.",
+    "categoria": "Pérdida y Ausencia",
+    "emocion": "Neutral",
+    "intensidad": 3,
+    "palabrasClave": [
+      "ropa",
+      "orden",
+      "despedida"
     ],
     "color": "#FFFFFF",
     "brillo": 3,
     "zona": "Centro",
-    "fecha": "2026-06-24T00:36:26.169Z"
+    "fecha": "2026-06-24T17:55:00.000Z"
   },
   {
-    "id": 12,
-    "texto": "ji",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Esperanza",
-    "intensidad": 2,
-    "palabrasClave": [],
-    "color": "#FFFFFF",
-    "brillo": 2,
+    "id": 40,
+    "texto": "Mirar al cielo oscuro y murmurar un 'gracias'. Entendí que dolió perderte porque tenerte en mi vida fue una fortuna inmensa.",
+    "categoria": "Pérdida y Ausencia",
+    "emocion": "Gratitud",
+    "intensidad": 5,
+    "palabrasClave": [
+      "cielo",
+      "fortuna",
+      "agradecimiento"
+    ],
+    "color": "#00CED1",
+    "brillo": 5,
     "zona": "Centro",
-    "fecha": "2026-06-24T00:37:40.892Z"
+    "fecha": "2026-06-24T18:08:00.000Z"
   },
   {
-    "id": 13,
-    "texto": "fi",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Esperanza",
-    "intensidad": 2,
-    "palabrasClave": [],
-    "color": "#FFFFFF",
-    "brillo": 2,
-    "zona": "Centro",
-    "fecha": "2026-06-24T00:48:30.660Z"
+    "id": 41,
+    "texto": "desde que argentina gano el mundial, me empezo gustar messi",
+    "categoria": "Aprendizaje y Transformación",
+    "emocion": "Transformación",
+    "intensidad": 4,
+    "palabrasClave": [
+      "Messi",
+      "Mundial",
+      "Preferencia"
+    ],
+    "color": "#8A2BE2",
+    "brillo": 4,
+    "zona": "Norte",
+    "fecha": "2026-06-29T00:39:51.231Z"
   },
   {
-    "id": 14,
-    "texto": "hola",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Esperanza",
-    "intensidad": 2,
-    "palabrasClave": [],
-    "color": "#FFFFFF",
-    "brillo": 2,
-    "zona": "Centro",
-    "fecha": "2026-06-24T01:40:17.965Z"
+    "id": 42,
+    "texto": "Lionel Messi, leyenda del fútbol nacido en Rosario. Creció en el FC Barcelona, donde ganó 35 títulos y 8 Balones de Oro. Tras pasar por el PSG, hoy brilla en el Inter Miami. Con la Selección Argentina alcanzó la gloria máxima al conquistar la Copa América y el Mundial 2022.",
+    "categoria": "Aprendizaje y Transformación",
+    "emocion": "Transformación",
+    "intensidad": 4,
+    "palabrasClave": [
+      "fútbol",
+      "logros",
+      "Mundial"
+    ],
+    "color": "#8A2BE2",
+    "brillo": 4,
+    "zona": "Norte",
+    "fecha": "2026-06-29T00:43:19.503Z"
   },
   {
-    "id": 15,
-    "texto": "reprobe mi curso favorito, ya fue todo",
-    "categoria": "Crecimiento Personal",
-    "emocion": "Esperanza",
-    "intensidad": 2,
-    "palabrasClave": [],
-    "color": "#FFFFFF",
-    "brillo": 2,
-    "zona": "Centro",
-    "fecha": "2026-06-24T01:51:50.832Z"
+    "id": 43,
+    "texto": "soy feliz",
+    "categoria": "Aprendizaje y Transformación",
+    "emocion": "Alegría",
+    "intensidad": 4,
+    "palabrasClave": [
+      "felicidad",
+      "alegría",
+      "bienestar"
+    ],
+    "color": "#fce8a0",
+    "brillo": 4,
+    "zona": "Norte",
+    "fecha": "2026-06-29T02:40:19.371Z"
   }
 ]

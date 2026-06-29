@@ -11,12 +11,19 @@ const INTENTOS_POSICION = 50;
 
 export function setCapaEstrellas(el) { capaEstrellas = el; }
 export function getEstrellas() { return estrellas; }
-const VIEWPORT_W = 4000;
-const VIEWPORT_H = 4000;
 
+// NOTA sobre el sistema de coordenadas: las estrellas se posicionan
+// usando window.innerWidth/innerHeight (centro de la VENTANA), no
+// VIEWPORT_CENTRO_X/Y de config.js (centro del VIEWPORT de 4000px).
+// Esto es intencional: con cámara neutra (_x=0,_y=0,_zoom=1) y el
+// viewport en top:0;left:0, ambos centros coinciden visualmente, así
+// que una estrella nace siempre centrada en pantalla la primera vez
+// que se ve. El centro del viewport (VIEWPORT_CENTRO_X/Y) se usa en
+// cambio en conexiones.js, donde sí importa para replicar el
+// transform-origin de la cámara en cualquier estado de zoom/pan.
 export function posicionPorCategoria(categoria, tamanoNueva) {
   const offset = ZONA_OFFSET[categoria] || { dx: 0, dy: 0 };
- const cx = window.innerWidth  / 2;
+  const cx = window.innerWidth  / 2;
   const cy = window.innerHeight / 2;
 
   for (let intento = 0; intento < INTENTOS_POSICION; intento++) {
@@ -129,7 +136,7 @@ export function crearEstrellaDOM(datos) {
   return contenedor;
 }
 
-export function crearEstrellaTemporal(colorInicial = '#FFD700', intensidadInicial = 3) {
+export function crearEstrellaTemporal(colorInicial = '#fce8a0', intensidadInicial = 3) {
   const contenedorGiro = document.createElement('div');
   contenedorGiro.style.cssText = `
     display: flex;
@@ -168,7 +175,7 @@ export function anadirEstrella(datosBackend, callbackRecalcular) {
     id: datosBackend.id || Date.now(),
     x: pos.x,
     y: pos.y,
-    color: datosBackend.color || '#ffd700',
+    color: datosBackend.color || '#fce8a0',
     tamano,
     categoria: datosBackend.categoria || 'Huella',
     emocion: datosBackend.emocion || '',
@@ -194,7 +201,7 @@ export async function anadirEstrellaAnimada(datosBackend, callbackRecalcular, ca
     id: datosBackend.id || Date.now(),
     x: pos.x,
     y: pos.y,
-    color: datosBackend.color || '#ffd700',
+    color: datosBackend.color || '#fce8a0',
     tamano,
     categoria: datosBackend.categoria || 'Huella',
     emocion: datosBackend.emocion || '',

@@ -127,7 +127,7 @@ Respuesta esperada:
   "id": 1,
   "texto": "Mi mamá siempre me apoyó en mis estudios.",
   "categoria": "Familia",
-  "color": "#FFD700",
+  "color": "#ffedab",
   "tamano": 2,
   "fecha": "2026-06-21T19:44:25.672Z"
 }
@@ -157,7 +157,7 @@ Ejemplo de error:
     "id": 1,
     "texto": "Mi mamá siempre me apoyó en mis estudios.",
     "categoria": "Familia",
-    "color": "#FFD700",
+    "color": "#ffedab",
     "tamano": 2,
     "fecha": "2026-06-21T19:44:25.672Z"
   },
@@ -188,7 +188,7 @@ Devuelve nodos (una huella = un nodo) y enlaces (links) entre huellas que compar
       "id": 1,
       "texto": "Mi mamá siempre me apoyó en mis estudios.",
       "categoria": "Familia",
-      "color": "#FFD700",
+      "color": "#ffedab",
       "tamano": 2,
       "fecha": "2026-06-21T19:44:25.672Z"
     },
@@ -196,7 +196,7 @@ Devuelve nodos (una huella = un nodo) y enlaces (links) entre huellas que compar
       "id": 2,
       "texto": "Mi papá nunca dejó de creer en mí.",
       "categoria": "Familia",
-      "color": "#FFD700",
+      "color": "#ffedab",
       "tamano": 2,
       "fecha": "2026-06-21T19:50:10.120Z"
     }
@@ -219,9 +219,9 @@ Devuelve nodos (una huella = un nodo) y enlaces (links) entre huellas que compar
 
 | Categoría             | Color     |
 |------------------------|-----------|
-| Familia                | `#FFD700` |
+| Familia                | `#ffedab` |
 | Amigos                 | `#4DA6FF` |
-| Amor                   | `#FF69B4` |
+| Amor                   | `#BC587B` |
 | Estudios               | `#FFFFFF` |
 | Crecimiento Personal    | `#7CFC00` |
 

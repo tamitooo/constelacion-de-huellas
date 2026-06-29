@@ -25,7 +25,21 @@ function easeInOutCubic(t) {
 }
 function lerp(a, b, t) { return a + (b - a) * t; }
 
+/**
+ * Convierte un color hex (#RRGGBB) a sus componentes {r,g,b}.
+ * Si el valor no es un hex válido de 6 dígitos (undefined, vacío,
+ * formato corto "#fff", nombre de color como "gold", etc.), cae a
+ * dorado por defecto en vez de producir NaN silenciosamente: con
+ * NaN en rgba(...) el navegador simplemente no dibuja nada, y la
+ * estrella se vuelve invisible durante toda la animación sin
+ * ningún aviso de qué pasó.
+ */
 function hexRGB(hex) {
+  const esHexValido = typeof hex === 'string' && /^#[0-9a-fA-F]{6}$/.test(hex);
+  if (!esHexValido) {
+    console.warn(`hexRGB recibió un valor inesperado: "${hex}". Usando dorado como fallback.`);
+    hex = '#fce8a0';
+  }
   const h = hex.replace('#', '');
   return {
     r: parseInt(h.slice(0, 2), 16),
@@ -118,6 +132,14 @@ export async function animarNuevaEstrella({ color, destinoX, destinoY, intensida
   const cy = window.innerHeight / 2;
   const pixSize = PIX;
   const { r, g, b } = hexRGB(color);
+
+  // Todo lo que sigue va en try/finally: si cualquier fase lanza una
+  // excepción (ej. datos inesperados), el finally garantiza que el
+  // canvas temporal (fixed, z-index 9999, pantalla completa) se
+  // elimine de todas formas. Sin esto, un error a mitad de la
+  // animación deja el canvas fantasma cubriendo la pantalla para
+  // siempre, ya que canvas.remove() nunca llegaría a ejecutarse.
+  try {
 
   // ── FASE 1: Zoom in ──────────────────────────────────────────────────────
   await animarFrame(DURACION.ZOOM_IN, (t) => {
@@ -250,5 +272,7 @@ export async function animarNuevaEstrella({ color, destinoX, destinoY, intensida
     }
   });
 
-  canvas.remove();
+  } finally {
+    canvas.remove();
+  }
 }

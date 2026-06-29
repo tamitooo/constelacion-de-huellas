@@ -82,7 +82,7 @@ export async function manejarEnvio(e, callbackRecalcular) {
 
   // ── Paso 2: Estrella temporal girando ──
   elementos.estrellaNaciente.innerHTML = '';
-  const temporal = crearEstrellaTemporal('#FFD700', 3);
+  const temporal = crearEstrellaTemporal('#fce8a0', 3);
   elementos.estrellaNaciente.appendChild(temporal.element);
   elementos.estrellaNaciente.classList.remove('oculto');
 

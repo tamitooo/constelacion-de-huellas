@@ -4,8 +4,7 @@ export const camera = {
   _x: 0, _y: 0, _zoom: 1,
 };
 
-// Evita que, si configurarPan/configurarZoom se llamaran más de una
-// vez por error, se acumulen listeners duplicados en window/viewport.
+
 let panConfigurado = false;
 let zoomConfigurado = false;
 

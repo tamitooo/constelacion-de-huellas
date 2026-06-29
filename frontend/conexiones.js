@@ -1,5 +1,5 @@
 // conexiones.js
-import { CONEXION } from './config.js';
+import { CONEXION, VIEWPORT_CENTRO_X, VIEWPORT_CENTRO_Y } from './config.js';
 
 let conexiones = [];
 
@@ -75,14 +75,12 @@ export function recalcularConexiones(estrellas) {
 }
 
 // Centro de transform-origin del #universo-viewport (ver style.css:
-// transform-origin: center center, sobre un viewport de 4000x4000px
-// posicionado en top:0;left:0). Las estrellas (divs dentro del
+// transform-origin: center center). Las estrellas (divs dentro del
 // viewport) heredan el transform CSS automáticamente; el canvas de
 // conexiones vive FUERA del viewport a propósito, así que debe
 // replicar manualmente la misma transformación para que las líneas
 // coincidan con las estrellas en cualquier estado de pan/zoom.
-const ORIGEN_TRANSFORM_X = 2000;
-const ORIGEN_TRANSFORM_Y = 2000;
+// Los valores vienen de config.js (única fuente de verdad).
 
 export function dibujarConexiones(ctx, capaConexiones, camera) {
   ctx.clearRect(0, 0, capaConexiones.width, capaConexiones.height);
@@ -100,8 +98,8 @@ export function dibujarConexiones(ctx, capaConexiones, camera) {
   // convertir una coordenada "neutra" de estrella en su posición
   // real en pantalla bajo el estado actual de cámara.
   function aPantalla(x, y) {
-    const px = ORIGEN_TRANSFORM_X + (x - ORIGEN_TRANSFORM_X) * zoom + camX;
-    const py = ORIGEN_TRANSFORM_Y + (y - ORIGEN_TRANSFORM_Y) * zoom + camY;
+    const px = VIEWPORT_CENTRO_X + (x - VIEWPORT_CENTRO_X) * zoom + camX;
+    const py = VIEWPORT_CENTRO_Y + (y - VIEWPORT_CENTRO_Y) * zoom + camY;
     return { px, py };
   }
 

@@ -1,20 +1,10 @@
 if (!process.env.GEMINI_API_KEY) {
-  console.error("⚠️ CRÍTICO: La variable GEMINI_API_KEY no está definida.");
+  console.error('⚠️ CRÍTICO: La variable GEMINI_API_KEY no está definida.');
 }
-
-const CATEGORIAS = [
-  "Familia",
-  "Amigos",
-  "Amor",
-  "Estudios",
-  "Crecimiento Personal",
-];
 
 const clasificarHuella = async (texto) => {
   try {
     const apiKey = process.env.GEMINI_API_KEY;
-    
-    // Endpoint oficial actualizado (v1) que reemplaza al viejo v1beta
     const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
     const prompt = `
@@ -22,35 +12,39 @@ Analiza el siguiente texto para la obra interactiva "Constelación de Huellas".
 
 Devuelve EXCLUSIVAMENTE un JSON válido.
 
-Categorías permitidas:
-- Familia
-- Amigos
-- Amor
-- Estudios
-- Crecimiento Personal
+Categorías permitidas (úsalas exactamente como están escritas):
+- Familia y Raíces
+- Amistad y Complicidad
+- Pérdida y Ausencia
+- Aprendizaje y Transformación
+- Amor y Desamor
 
-Emociones permitidas:
+Emociones permitidas (úsalas exactamente como están escritas):
+- Amor
 - Alegría
-- Nostalgia
+- Empatía
 - Gratitud
 - Tristeza
-- Esperanza
+- Nostalgia
+- Resiliencia
+- Transformación
+- Ira
 - Neutral
 
 Formato obligatorio:
 
 {
-  "categoria": "Familia",
+  "categoria": "Familia y Raíces",
   "emocion": "Gratitud",
-  "intensidad": 3,
-  "palabrasClave": ["hogar","mamá","apoyo"]
+  "intensidad": 4,
+  "palabrasClave": ["hogar","abuela","enseñanzas"]
 }
 
 Reglas:
 - categoria debe ser exactamente una de las categorías permitidas.
 - emocion debe ser exactamente una de las emociones permitidas.
 - intensidad debe ser un número entero entre 1 y 5.
-- palabrasClave debe contener máximo 3 palabras.
+- palabrasClave debe contener máximo 3 palabras clave (sustantivos o conceptos, sin artículos ni preposiciones).
 - No escribas explicaciones.
 - No uses markdown.
 - No uses bloques de código.
@@ -60,17 +54,12 @@ Texto:
 "${texto}"
 `;
 
-    // Petición HTTP directa
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [{
-          parts: [{ text: prompt }]
-        }]
-      })
+        contents: [{ parts: [{ text: prompt }] }],
+      }),
     });
 
     if (!response.ok) {
@@ -79,37 +68,35 @@ Texto:
     }
 
     const data = await response.json();
-    
-    // Extraemos el texto de la respuesta estructurada de Google
     const textResponse = data.candidates[0].content.parts[0].text.trim();
 
-    console.log("Gemini respondió:");
+    console.log('Gemini respondió:');
     console.log(textResponse);
 
     const limpio = textResponse
-      .replace(/```json/g, "")
-      .replace(/```/g, "")
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
       .trim();
 
     const resultado = JSON.parse(limpio);
 
     return {
-      categoria: resultado.categoria || "Crecimiento Personal",
-      emocion: resultado.emocion || "Esperanza",
-      intensidad: resultado.intensidad || 2,
-      palabrasClave: resultado.palabrasClave || []
+      categoria:    resultado.categoria    || 'Aprendizaje y Transformación',
+      emocion:      resultado.emocion      || 'Neutral',
+      intensidad:   resultado.intensidad   || 2,
+      palabrasClave: resultado.palabrasClave || [],
     };
 
   } catch (error) {
-    console.error("====== ERROR EN CLASIFICAR HUELLA (FETCH) ======");
+    console.error('====== ERROR EN CLASIFICAR HUELLA ======');
     console.error(error.message);
-    console.error("================================================");
-    
+    console.error('========================================');
+
     return {
-      categoria: "Crecimiento Personal",
-      emocion: "Esperanza",
-      intensidad: 2,
-      palabrasClave: []
+      categoria:    'Aprendizaje y Transformación',
+      emocion:      'Neutral',
+      intensidad:   2,
+      palabrasClave: [],
     };
   }
 };
