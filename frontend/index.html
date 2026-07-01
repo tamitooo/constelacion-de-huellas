@@ -1,3 +1,28 @@
+<!--
+  ==============================================================
+  index.html — Constelación de Huellas
+  ==============================================================
+  Estructura general de la página (de arriba a abajo):
+
+  1. #universo-contenedor: fondo espacial + #universo-viewport
+     (lienzo grande con pan/zoom, contiene #capa-estrellas) +
+     #capa-conexiones (canvas FIJO, fuera del viewport a propósito
+     — ver nota más abajo sobre coordenadas).
+  2. #capa-formulario: pantalla inicial donde el visitante escribe
+     su huella (recuerdo/experiencia).
+  3. #capa-proceso: pantalla de "procesando" con la estrella
+     naciente girando, y luego el resultado (categoría + emoción)
+     una vez que Gemini clasificó el texto.
+  4. Botón flotante "Volver" + controles de zoom: solo visibles
+     durante la exploración libre de la constelación ya construida.
+  5. #guia-exploracion: texto de ayuda al pie.
+  6. <script type="module" src="main.js">: arranca toda la app.
+
+  Toda la lógica vive en los módulos JS (main.js, ui.js, estrellas.js,
+  conexiones.js, camera.js, api.js, config.js, animacion-estrella.js);
+  este archivo es solo el esqueleto de marcado + estilos (style.css).
+  ==============================================================
+-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,7 +39,7 @@
     <div id="fondo-espacial" aria-hidden="true">
     <!-- VIEWPORT: este es el que la cámara mueve/escala (pan y zoom) -->
     <div id="universo-viewport">
-      
+
       <div id="capa-estrellas"></div></div>
     </div>
 
@@ -30,7 +55,7 @@
 
   <!-- FORMULARIO -->
   <main id="capa-formulario">
-    
+
     <h1 id="titulo-poetico">¿Qué huella permanece contigo?</h1>
     <form id="form-huella" autocomplete="off">
       <textarea

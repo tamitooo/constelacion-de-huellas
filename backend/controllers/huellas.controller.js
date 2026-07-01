@@ -1,11 +1,45 @@
 /**
- * controllers/huellas.controller.js
+ * ============================================================
+ *  controllers/huellas.controller.js
+ * ============================================================
+ *  Contiene la lógica de negocio de cada endpoint: recibe la
+ *  petición HTTP, orquesta el trabajo (clasificar con IA, leer/
+ *  escribir en el archivo de datos, calcular conexiones) y arma
+ *  la respuesta JSON.
+ *
+ *  Responsabilidades de este archivo:
+ *  ------------------------------------------------------------
+ *  1. crearHuella        -> valida el texto recibido, lo manda a
+ *                            Gemini para clasificarlo (categoría,
+ *                            emoción, intensidad, palabras clave),
+ *                            calcula color y zona, y persiste la
+ *                            huella en el archivo JSON.
+ *  2. obtenerHuellas      -> devuelve todas las huellas guardadas
+ *                            tal cual están en el archivo.
+ *  3. obtenerConstelacion -> transforma las huellas en un grafo
+ *                            { nodes, links } comparando cada par
+ *                            de huellas por palabras clave
+ *                            compartidas, para que el frontend
+ *                            pueda dibujar las líneas de conexión.
+ *
+ *  Mapas de apoyo (constantes locales):
+ *  ------------------------------------------------------------
+ *  - COLORES_POR_EMOCION: asigna un color hex a cada emoción
+ *    posible devuelta por Gemini. Debe mantenerse sincronizado
+ *    con COLOR_EMOCION del frontend (frontend/config.js).
+ *  - obtenerZona: ubica cada categoría en un "cuadrante" del
+ *    universo visual (Norte/Sur/Este/Oeste/Centro), usado luego
+ *    por el frontend (ZONA_OFFSET en config.js) para posicionar
+ *    las estrellas agrupadas por temática.
+ * ============================================================
  */
 
 const { clasificarHuella } = require('../services/gemini.service');
 const { readHuellas, addHuella, getNextId } = require('../utils/fileManager');
 
 
+// Color asociado a cada emoción posible. Se guarda en cada huella
+// para que el frontend no tenga que recalcularlo.
 const COLORES_POR_EMOCION = {
   'Amor':           '#BC587B',  // Rosa Eléctrico / Magenta
   'Alegría':        '#fce8a0',  // Dorado / Amarillo cálido
@@ -19,11 +53,17 @@ const COLORES_POR_EMOCION = {
   'Neutral':        '#FFFFFF',  // Blanco
 };
 
+/** Devuelve el color hex asociado a una emoción (blanco si no se reconoce). */
 const obtenerColor = (emocion) => {
   return COLORES_POR_EMOCION[emocion] || '#FFFFFF';
 };
 
-
+/**
+ * Asigna una "zona" (cuadrante del universo visual) según la
+ * categoría clasificada por Gemini. El frontend usa esta zona
+ * (ver ZONA_OFFSET en config.js) para agrupar visualmente las
+ * estrellas de la misma temática.
+ */
 const obtenerZona = (categoria) => {
   const zonas = {
     'Familia y Raíces':          'Oeste',
@@ -37,6 +77,10 @@ const obtenerZona = (categoria) => {
 
 /**
  * POST /api/huellas
+ * ------------------------------------------------------------
+ * Recibe { texto } en el body, lo valida, lo clasifica con
+ * Gemini, arma el objeto completo de la huella (con color,
+ * brillo y zona ya calculados) y lo persiste.
  */
 const crearHuella = async (req, res) => {
   try {
@@ -56,6 +100,7 @@ const crearHuella = async (req, res) => {
       return res.status(400).json({ error: 'Máximo 1000 caracteres.' });
     }
 
+    // Clasificación por IA: categoría, emoción, intensidad y palabras clave.
     const analisis = await clasificarHuella(textoLimpio);
     const color = obtenerColor(analisis.emocion);
 
@@ -67,7 +112,7 @@ const crearHuella = async (req, res) => {
       intensidad:   analisis.intensidad,
       palabrasClave: analisis.palabrasClave,
       color,
-      brillo:       analisis.intensidad,
+      brillo:       analisis.intensidad, // el brillo visual escala con la intensidad emocional
       zona:         obtenerZona(analisis.categoria),
       fecha:        new Date().toISOString(),
     };
@@ -86,6 +131,9 @@ const crearHuella = async (req, res) => {
 
 /**
  * GET /api/huellas
+ * ------------------------------------------------------------
+ * Devuelve el listado completo de huellas tal cual está
+ * persistido en el archivo JSON.
  */
 const obtenerHuellas = async (req, res) => {
   try {
@@ -102,6 +150,14 @@ const obtenerHuellas = async (req, res) => {
 
 /**
  * GET /api/constelacion
+ * ------------------------------------------------------------
+ * Construye el grafo que el frontend necesita para dibujar la
+ * constelación:
+ *   - nodes: una estrella por huella, con sus datos visuales.
+ *   - links: una conexión por cada par de huellas que comparten
+ *     al menos una palabra clave (comparación O(n²) sobre todas
+ *     las huellas; suficiente para el volumen esperado de una
+ *     instalación de arte).
  */
 const obtenerConstelacion = async (req, res) => {
   try {
@@ -120,6 +176,8 @@ const obtenerConstelacion = async (req, res) => {
       fecha:        huella.fecha,
     }));
 
+    // Compara cada par de huellas (i, j) una sola vez (j > i) para
+    // detectar palabras clave compartidas y generar un link.
     const links = [];
     for (let i = 0; i < huellas.length; i++) {
       for (let j = i + 1; j < huellas.length; j++) {

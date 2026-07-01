@@ -1,6 +1,39 @@
-// api.js
+/**
+ * ============================================================
+ *  api.js
+ * ============================================================
+ *  Capa de comunicación entre el frontend y el backend Express.
+ *  Es el único archivo que hace fetch() directamente al backend;
+ *  el resto del frontend (main.js, ui.js) llama a estas funciones
+ *  en vez de construir URLs o manejar fetch a mano.
+ *
+ *  Funciones exportadas:
+ *  ------------------------------------------------------------
+ *  - cargarConstelacion() -> GET /api/constelacion. Si el backend
+ *    no responde (apagado, sin red, etc.), NO rompe la app: cae
+ *    a un set de huellas de ejemplo hardcodeadas, para que la
+ *    instalación siempre muestre algo en pantalla (importante en
+ *    un contexto de exhibición en vivo).
+ *  - enviarHuella(texto) -> POST /api/huellas con el texto nuevo.
+ *    Si falla, lanza el error hacia quien la llamó (ui.js), que
+ *    es responsable de mostrar el estado de error al usuario.
+ *
+ *  Función interna: fetchConTimeout()
+ *  ------------------------------------------------------------
+ *  Envuelve fetch() con un AbortController para que ninguna
+ *  petición quede "colgada" indefinidamente si el backend no
+ *  responde — después de FETCH_TIMEOUT_MS (config.js) se aborta
+ *  y se lanza un error explicativo.
+ * ============================================================
+ */
+
 import { API_BASE, COLOR_EMOCION, FETCH_TIMEOUT_MS } from './config.js';
 
+/**
+ * fetch() con límite de tiempo. Si el servidor no responde antes
+ * de FETCH_TIMEOUT_MS, aborta la petición y lanza un error claro
+ * en vez de dejar la promesa pendiente para siempre.
+ */
 async function fetchConTimeout(url, opciones = {}) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
@@ -17,6 +50,13 @@ async function fetchConTimeout(url, opciones = {}) {
   }
 }
 
+/**
+ * Carga los nodos (estrellas) de la constelación desde el backend.
+ * Si el backend no está disponible, devuelve un set de huellas de
+ * ejemplo para que la instalación no arranque completamente vacía
+ * ni rota (pensado para demos/exhibiciones donde el backend podría
+ * fallar sin que haya alguien técnico cerca para reiniciarlo).
+ */
 export async function cargarConstelacion() {
   try {
     const resp = await fetchConTimeout(`${API_BASE}/constelacion`);
@@ -26,6 +66,9 @@ export async function cargarConstelacion() {
   } catch (e) {
     console.warn('Backend no disponible. Cargando datos de ejemplo.', e);
 
+    // Datos de ejemplo: cubren las 5 categorías y varias emociones,
+    // para que la constelación de respaldo se vea completa y
+    // representativa aunque el backend esté caído.
     return [
       {
         id: 1,
@@ -103,6 +146,12 @@ export async function cargarConstelacion() {
   }
 }
 
+/**
+ * Envía una huella nueva (texto libre escrito por el visitante)
+ * al backend, que la clasificará con Gemini y la persistirá.
+ * Devuelve la huella ya completa (con categoría, emoción, color,
+ * etc.) para que el frontend pueda animarla como estrella nueva.
+ */
 export async function enviarHuella(texto) {
   const resp = await fetchConTimeout(`${API_BASE}/huellas`, {
     method: 'POST',

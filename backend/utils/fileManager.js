@@ -1,22 +1,37 @@
 /**
- * utils/fileManager.js
- * --------------------------------------------------------
- * Utilidad encargada de toda la persistencia en archivo JSON.
- * Centraliza las operaciones de lectura y escritura para que
- * el resto de la aplicación no tenga que conocer detalles
- * del sistema de archivos (separación de responsabilidades).
- * --------------------------------------------------------
+ * ============================================================
+ *  utils/fileManager.js
+ * ============================================================
+ *  Utilidad encargada de TODA la persistencia del proyecto.
+ *  En vez de una base de datos, "Constelación de Huellas" guarda
+ *  las huellas en un archivo JSON plano (data/huellas.json).
+ *  Centralizar la lectura/escritura acá permite que el resto de
+ *  la app (controladores, etc.) no tenga que conocer detalles
+ *  del sistema de archivos — solo llama a estas funciones.
+ *
+ *  Funciones exportadas:
+ *  ------------------------------------------------------------
+ *  - readHuellas()   -> lee y parsea data/huellas.json (lo crea
+ *                        vacío si todavía no existe).
+ *  - writeHuellas()  -> sobrescribe el archivo completo con un
+ *                        arreglo de huellas.
+ *  - addHuella()     -> agrega una huella nueva al final del
+ *                        arreglo existente y persiste.
+ *  - getNextId()     -> calcula el próximo id autoincremental
+ *                        en base al id más alto ya guardado.
+ * ============================================================
  */
 
 const fs = require('fs/promises');
 const path = require('path');
 
-// Ruta absoluta al archivo de persistencia
+// Ruta absoluta al archivo de persistencia (backend/data/huellas.json)
 const DATA_FILE_PATH = path.join(__dirname, '..', 'data', 'huellas.json');
 
 /**
  * Asegura que el archivo de datos exista.
- * Si no existe, lo crea con un arreglo vacío.
+ * Si no existe (primera vez que corre el proyecto), lo crea con
+ * un arreglo vacío para evitar errores de lectura.
  */
 const ensureFileExists = async () => {
   try {

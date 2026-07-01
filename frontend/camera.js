@@ -1,4 +1,37 @@
-// camera.js
+/**
+ * ============================================================
+ *  camera.js
+ * ============================================================
+ *  Controla el pan (arrastrar) y zoom (rueda / trackpad / botones)
+ *  del universo de estrellas. No mueve el DOM directamente: solo
+ *  actualiza el estado `camera` (posición y zoom "objetivo"), y
+ *  es main.js quien, en su loop de animación, interpola suavemente
+ *  hacia esos valores y aplica el transform CSS real al viewport.
+ *
+ *  Exporta:
+ *  ------------------------------------------------------------
+ *  - camera: objeto de estado compartido {_x, _y, _zoom,
+ *    targetX, targetY, targetZoom}. Los "target*" son hacia dónde
+ *    se quiere ir; los "_*" son la posición actual interpolada
+ *    (ver animar() en main.js).
+ *  - configurarPan(viewport, capaProceso): activa arrastre con
+ *    mouse y touch. Se desactiva mientras #capa-proceso está
+ *    visible (no tiene sentido explorar el universo mientras se
+ *    está procesando el envío de una huella).
+ *  - configurarZoom(viewport): activa zoom con rueda/trackpad,
+ *    normalizando la sensibilidad para que se sienta igual de
+ *    controlable en mouse y trackpad.
+ *  - zoomIn() / zoomOut(): pasos fijos de zoom para los botones
+ *    +/- de la UI (más predecibles que la rueda).
+ *  - resetCamara(): vuelve pan y zoom a su estado inicial.
+ *
+ *  Nota de diseño: configurarPan/configurarZoom tienen guardas
+ *  (panConfigurado/zoomConfigurado) para evitar registrar los
+ *  mismos listeners dos veces si por error se llaman más de una
+ *  vez durante la inicialización.
+ * ============================================================
+ */
+
 export const camera = {
   targetX: 0, targetY: 0, targetZoom: 1,
   _x: 0, _y: 0, _zoom: 1,
@@ -8,6 +41,11 @@ export const camera = {
 let panConfigurado = false;
 let zoomConfigurado = false;
 
+/**
+ * Activa el arrastre (pan) del universo con mouse y touch.
+ * Mientras el usuario arrastra, va actualizando camera.targetX/Y;
+ * la interpolación suave hacia esos valores ocurre en main.js.
+ */
 export function configurarPan(viewport, capaProceso) {
   if (panConfigurado) {
     console.warn('configurarPan ya fue llamado antes; se ignora la llamada repetida.');
@@ -19,6 +57,8 @@ export function configurarPan(viewport, capaProceso) {
   let startX, startY, startCamX, startCamY;
 
   const startDrag = (x, y) => {
+    // Solo se puede arrastrar cuando la capa de "procesando huella"
+    // está oculta (o sea, en modo exploración libre).
     if (!capaProceso.classList.contains('oculto')) return;
     isDragging = true;
     startX = x; startY = y;
@@ -36,10 +76,12 @@ export function configurarPan(viewport, capaProceso) {
     viewport.style.cursor = 'default';
   };
 
+  // --- Soporte mouse ---
   viewport.addEventListener('mousedown', e => startDrag(e.clientX, e.clientY));
   window.addEventListener('mousemove', e => moveDrag(e.clientX, e.clientY));
   window.addEventListener('mouseup', endDrag);
 
+  // --- Soporte touch (un solo dedo, identificado por touchId) ---
   let touchId = null;
   viewport.addEventListener('touchstart', e => {
     const t = e.touches[0];
@@ -51,7 +93,7 @@ export function configurarPan(viewport, capaProceso) {
   viewport.addEventListener('touchmove', e => {
     const t = Array.from(e.touches).find(t => t.identifier === touchId);
     if (!t) return;
-    e.preventDefault();
+    e.preventDefault(); // evita el scroll de la página mientras se arrastra
     moveDrag(t.clientX, t.clientY);
   }, { passive: false });
 
@@ -72,6 +114,11 @@ const ZOOM_MAX = 3.5;
 // fuera a ZOOM_MIN casi instantáneamente con un solo gesto.
 const PASO_ZOOM_BOTON = 1.2;
 
+/**
+ * Activa el zoom con rueda de mouse / gesto de trackpad sobre el
+ * viewport. Normaliza deltaY para que mouse y trackpad se sientan
+ * parecidos (ver comentario detallado dentro del listener).
+ */
 export function configurarZoom(viewport) {
   if (zoomConfigurado) {
     console.warn('configurarZoom ya fue llamado antes; se ignora la llamada repetida.');

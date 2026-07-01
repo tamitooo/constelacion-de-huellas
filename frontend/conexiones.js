@@ -1,28 +1,77 @@
-// conexiones.js
+/**
+ * ============================================================
+ *  conexiones.js
+ * ============================================================
+ *  Calcula y dibuja las líneas que conectan estrellas relacionadas
+ *  entre sí dentro de la constelación, generando el "engine" de
+ *  puntaje de similitud entre huellas.
+ *
+ *  Flujo general:
+ *  ------------------------------------------------------------
+ *  1. recalcularConexiones(estrellas) — se llama cada vez que se
+ *     agrega o carga una estrella. Compara todas las parejas
+ *     posibles y les da un puntaje según 4 criterios (ver
+ *     CONEXION en config.js):
+ *       - misma categoría
+ *       - misma emoción
+ *       - suficientes palabras clave compartidas
+ *       - cercanía física en el lienzo
+ *     Las parejas con puntaje >= SCORE_MINIMO son candidatas.
+ *     Luego se seleccionan respetando un máximo de conexiones
+ *     por estrella (MAX_POR_ESTRELLA), priorizando los puntajes
+ *     más altos, para que ninguna estrella termine con demasiadas
+ *     líneas y el resultado visual no se vuelva un enredo.
+ *
+ *  2. dibujarConexiones(ctx, capaConexiones, camera) — se llama en
+ *     cada frame del loop de animación (main.js). Dibuja cada
+ *     línea seleccionada como un degradado suave (más opaco al
+ *     centro, transparente en los extremos), aplicando manualmente
+ *     la misma transformación de cámara (pan + zoom) que el CSS
+ *     le aplica a las estrellas — ver la nota grande dentro de la
+ *     función aPantalla() sobre por qué esto es necesario.
+ *
+ *  Funciones de apoyo exportadas:
+ *  ------------------------------------------------------------
+ *  - getConexiones(): devuelve el array actual de conexiones.
+ *  - palabrasCompartidas(a, b): cuenta cuántas palabras clave
+ *    tienen en común dos huellas (comparación case-insensitive).
+ *  - distancia(a, b): distancia euclidiana entre dos estrellas.
+ * ============================================================
+ */
+
 import { CONEXION, VIEWPORT_CENTRO_X, VIEWPORT_CENTRO_Y } from './config.js';
 
+// Estado interno: lista de conexiones actualmente activas.
 let conexiones = [];
 
 export function getConexiones() { return conexiones; }
 
+/** Cuenta cuántas palabras clave comparten dos huellas (sin distinguir mayúsculas). */
 export function palabrasCompartidas(a, b) {
   if (!a.palabrasClave.length || !b.palabrasClave.length) return 0;
   const setA = new Set(a.palabrasClave.map(p => p.toLowerCase()));
   return b.palabrasClave.filter(p => setA.has(p.toLowerCase())).length;
 }
 
+/** Distancia euclidiana simple entre dos estrellas (coordenadas x, y). */
 export function distancia(a, b) {
   const dx = a.x - b.x;
   const dy = a.y - b.y;
   return Math.sqrt(dx * dx + dy * dy);
 }
 
+/**
+ * Recalcula el set completo de conexiones a partir del array de
+ * estrellas actuales. Se ejecuta cada vez que cambia el número de
+ * estrellas (nueva huella agregada, o carga inicial).
+ */
 export function recalcularConexiones(estrellas) {
   if (estrellas.length < 2) {
     conexiones = [];
     return;
   }
 
+  // Paso 1: generar todas las parejas candidatas con puntaje suficiente.
   const candidatos = [];
 
   for (let i = 0; i < estrellas.length; i++) {
@@ -43,8 +92,13 @@ export function recalcularConexiones(estrellas) {
     }
   }
 
+  // Paso 2: ordenar por puntaje descendente, para priorizar las
+  // conexiones más "fuertes" al aplicar el límite por estrella.
   candidatos.sort((x, y) => y.score - x.score);
 
+  // Paso 3: seleccionar conexiones respetando MAX_POR_ESTRELLA
+  // (cuántas líneas puede tener como máximo cada estrella), para
+  // que estrellas muy "conectadas" no saturen el dibujo.
   const gradosUsados = new Map();
   const seleccionadas = [];
 
@@ -59,6 +113,10 @@ export function recalcularConexiones(estrellas) {
     }
   }
 
+  // Paso 4: preservar la opacidad previa de cada conexión que ya
+  // existía (para que no "parpadeen" al recalcular), y asignar la
+  // opacidad objetivo según el puntaje (más puntaje = más visible,
+  // con un techo de 0.45 para no saturar el fondo estrellado).
   const claveConexion = (c) =>
     [Math.min(c.a.id, c.b.id), Math.max(c.a.id, c.b.id)].join('-');
 
@@ -69,7 +127,7 @@ export function recalcularConexiones(estrellas) {
 
   conexiones = seleccionadas.map(c => ({
     ...c,
-    opacity: opacidadPrevia.get(claveConexion(c)) ?? 0,
+    opacity: opacidadPrevia.get(claveConexion(c)) ?? 0, // arranca en 0 si es nueva -> aparece con fade-in
     opacityTarget: Math.min(0.18 + (c.score - 3) * 0.06, 0.45),
   }));
 }
@@ -82,6 +140,13 @@ export function recalcularConexiones(estrellas) {
 // coincidan con las estrellas en cualquier estado de pan/zoom.
 // Los valores vienen de config.js (única fuente de verdad).
 
+/**
+ * Dibuja todas las conexiones activas en el canvas fijo de
+ * conexiones, aplicando manualmente la transformación de cámara
+ * (pan + zoom) para que las líneas coincidan pixel a pixel con
+ * las estrellas del DOM (que sí reciben el transform vía CSS).
+ * Se llama en cada frame del loop de animación.
+ */
 export function dibujarConexiones(ctx, capaConexiones, camera) {
   ctx.clearRect(0, 0, capaConexiones.width, capaConexiones.height);
 
@@ -104,6 +169,8 @@ export function dibujarConexiones(ctx, capaConexiones, camera) {
   }
 
   for (const c of conexiones) {
+    // Interpolación suave hacia la opacidad objetivo (efecto fade
+    // in/out en vez de aparecer/desaparecer de golpe).
     c.opacity += (c.opacityTarget - c.opacity) * 0.025;
     if (c.opacity < 0.005) continue;
 
@@ -113,6 +180,8 @@ export function dibujarConexiones(ctx, capaConexiones, camera) {
     const ax = pa.px + ox, ay = pa.py + oy;
     const bx = pb.px + ox, by = pb.py + oy;
 
+    // Degradado lineal a lo largo de la línea: transparente en los
+    // extremos, más visible en el centro, simulando un "hilo de luz".
     const grad = ctx.createLinearGradient(ax, ay, bx, by);
     grad.addColorStop(0,    hexAColor('#ffffff', 0));
     grad.addColorStop(0.25, hexAColor('#ffffff', c.opacity));
@@ -124,7 +193,7 @@ export function dibujarConexiones(ctx, capaConexiones, camera) {
     ctx.moveTo(ax, ay);
     ctx.lineTo(bx, by);
     ctx.strokeStyle = grad;
-    ctx.lineWidth = 0.6 * zoom;
+    ctx.lineWidth = 0.6 * zoom; // el grosor escala con el zoom para verse consistente
     ctx.lineCap = 'round';
     ctx.stroke();
   }

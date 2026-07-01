@@ -1,173 +1,166 @@
-# 🌌 Constelación de Huellas
+# ✧ Constelación de Huellas
 
-Proyecto interactivo que transforma pensamientos, recuerdos y mensajes en una constelación visual de estrellas.  
-Cada huella escrita por el usuario es analizada por inteligencia artificial y convertida en una estrella dentro de un universo simbólico.
+> *"La huella representa la permanencia de aquello ausente que continúa influyendo en el presente, configurando nuestra identidad a través de la memoria, la experiencia y la relación con los otros."*
 
----
-
-## ✨ Descripción
-
-“Constelación de Huellas” es una aplicación web donde el usuario escribe un texto y este es analizado por IA para identificar su contenido emocional o temático.
-
-Cada huella se guarda y se transforma en una estrella dentro de una constelación, representando experiencias humanas como parte de un universo visual.
+**Constelación de Huellas** es una instalación interactiva de arte digital generativo que transforma recuerdos anónimos, escritos por los visitantes, en estrellas que se integran a una constelación colectiva en constante crecimiento.
 
 ---
 
-## 🚀 Funcionalidades
+## 🌌 Concepto y motivación
 
-- Registro de huellas de texto
-- Clasificación automática con inteligencia artificial (Gemini)
-- Detección de categoría emocional o temática
-- Asignación de color según categoría
-- Tamaño dinámico según intensidad del mensaje
-- Guardado de datos en JSON
-- Visualización tipo galaxia / constelación en el frontend
-- Interacción en tiempo real entre usuario y universo
+Elegimos el concepto de **huella** porque todas las experiencias, personas y acontecimientos dejan marcas que influyen en nuestra identidad. Aunque su origen ya no esté presente, sus efectos permanecen en la memoria y continúan formando parte de quienes somos.
 
----
+La obra combina:
 
-## 🧠 Cómo funciona
+- Un **elemento físico**: un jarrón transparente con estrellas de papel que contienen huellas anónimas, sobre una mesa de interacción.
+- Una **visualización digital dinámica**: una pantalla que transforma las experiencias escritas por los participantes en cuerpos celestes (estrellas) que forman una constelación colectiva en tiempo real.
 
-1. El usuario escribe una huella (texto)
-2. Se envía al backend mediante una API
-3. La IA analiza el contenido
-4. Se asigna:
-   - Categoría (Familia, Amigos, Amor, Estudios, Crecimiento Personal)
-   - Emoción
-   - Intensidad
-5. Se guarda como una estrella
-6. El frontend lo representa visualmente en la constelación
+## 🧭 Flujo de experiencia
 
----
+1. **Jarrón de estrellas** — el visitante toma una estrella de papel del jarrón.
+2. **Lee una huella anónima** — descubre una huella escrita por otra persona.
+3. **Reflexión** — se invita a pensar: *"¿Qué huella permanece contigo?"*
+4. **Participación** — el visitante escribe su propia huella de forma anónima en la pantalla.
+5. **Transformación** — el sistema interpreta la huella (vía IA) y la convierte en un elemento visual único: una nueva estrella con color, brillo, categoría y emoción propios.
+6. **Universo en expansión** — la nueva huella se integra al universo colectivo, que crece con cada participante.
 
-## 🖥️ Frontend
+## ⚙️ Diagrama de funcionamiento
 
-El frontend es la interfaz visual del proyecto, donde el usuario interactúa directamente con el universo.
+```
+Visitante → escribe una huella → el sistema la clasifica
+   (categoría + emoción, vía Gemini)
+        ↓
+Se genera un elemento visual (estrella, con color/brillo según
+   la clasificación)
+        ↓
+La huella se guarda en la base de datos (archivo JSON)
+        ↓
+El universo digital se actualiza en tiempo real
+        ↓
+La obra evoluciona con cada nueva huella (nuevas conexiones
+   entre estrellas relacionadas)
+```
 
-Características:
+## 🏗️ Arquitectura técnica
 
-- Diseño tipo universo oscuro / galaxia
-- Campo de texto central para escribir huellas
-- Botón de envío para generar estrellas
-- Animaciones de estrellas en pantalla
-- Visualización dinámica de la constelación
-- Estética minimalista y poética
+El proyecto está dividido en dos partes independientes:
 
-Comunicación con backend:
+| Capa | Stack |
+|---|---|
+| **Frontend** | JavaScript vanilla (ES Modules), Canvas API, CSS puro, pixel art hecho a mano |
+| **Backend** | Node.js + Express |
+| **Persistencia** | Archivo JSON (`backend/data/huellas.json`) — sin base de datos externa |
+| **Clasificación de texto** | Google **Gemini** (`gemini-2.5-flash`) vía API REST |
 
-- POST /api/huellas → envía la huella del usuario
-- GET /api/huellas → obtiene todas las huellas
-- GET /api/constelacion → obtiene datos para el universo
+No se usa ningún framework de frontend (React, Vue, etc.): todo el universo, la cámara, las animaciones y las conexiones están hechos con JS y CSS puros, priorizando control total sobre el rendimiento y la estética pixel art.
 
----
+## 📁 Estructura del proyecto
 
-## 🗂️ Estructura del proyecto
+```
+constelacion-de-huellas/
+├── backend/
+│   ├── controllers/
+│   │   └── huellas.controller.js   # Lógica de cada endpoint (crear, listar, construir constelación)
+│   ├── routes/
+│   │   └── huellas.routes.js       # Definición de rutas REST (/api/huellas, /api/constelacion)
+│   ├── services/
+│   │   └── gemini.service.js       # Comunicación con la API de Gemini (clasificación de texto)
+│   ├── utils/
+│   │   └── fileManager.js          # Lectura/escritura del archivo JSON de persistencia
+│   ├── data/
+│   │   └── huellas.json            # (se genera automáticamente) — huellas guardadas
+│   ├── server.js                   # Punto de entrada del backend (Express)
+│   ├── package.json
+│   └── .env.example                # Variables de entorno necesarias (GEMINI_API_KEY, PORT)
+│
+├── frontend/
+│   ├── index.html                  # Esqueleto de la página (formulario, universo, controles)
+│   ├── style.css                   # Todos los estilos: universo, estrellas, formulario, UI flotante
+│   ├── main.js                     # Punto de entrada: cablea referencias DOM y arranca el loop principal
+│   ├── config.js                   # Constantes globales (colores, zonas, tiempos, parámetros de conexión)
+│   ├── api.js                      # Comunicación con el backend (fetch con timeout + fallback offline)
+│   ├── camera.js                   # Pan y zoom del universo (mouse, trackpad, touch, botones)
+│   ├── estrellas.js                # Creación, posicionamiento y pintado de estrellas (DOM + pixel art)
+│   ├── conexiones.js               # Motor de puntaje + dibujo de las líneas entre estrellas relacionadas
+│   ├── animacion-estrella.js       # Animación de "nacimiento" de una estrella nueva (zoom→corazón→vuelo→aterrizaje)
+│   └── ui.js                       # Orquesta el flujo de envío del formulario (procesando → resultado → exploración)
+│
+└── README.md
+```
 
-backend/
-├── server.js
-├── routes/
-│   └── huellas.routes.js
-├── controllers/
-│   └── huellas.controller.js
-├── services/
-│   └── gemini.service.js
-├── utils/
-│   └── fileManager.js
-├── data/
-│   └── huellas.json
-└── .env
+## 🧠 Clasificación con IA (Gemini)
 
-frontend/
-├── index.html
-├── style.css
-├── script.js
-└── assets/
+Cada huella enviada por un visitante se manda a Gemini (`gemini-2.5-flash`) con un prompt estricto que le pide devolver **solo JSON** con:
 
----
+- **`categoria`** — una de 5 categorías poéticas:
+  - Familia y Raíces
+  - Amistad y Complicidad
+  - Amor y Desamor
+  - Aprendizaje y Transformación
+  - Pérdida y Ausencia
+- **`emocion`** — una de 10 emociones (Amor, Alegría, Empatía, Gratitud, Tristeza, Nostalgia, Resiliencia, Transformación, Ira, Neutral), cada una con un color hex asociado.
+- **`intensidad`** — entero de 1 a 5 (define el tamaño y brillo de la estrella).
+- **`palabrasClave`** — hasta 3 palabras clave, usadas luego para calcular conexiones entre huellas.
 
-## 🛠️ Tecnologías usadas
+Si Gemini falla por cualquier motivo (red, respuesta inválida, etc.), el backend **nunca rompe la experiencia**: devuelve una clasificación neutra por defecto para que la huella se guarde igual.
 
-- Node.js
-- Express
-- Google Gemini AI
-- CORS
-- dotenv
-- File System (JSON)
-- HTML
-- CSS
-- JavaScript (Vanilla)
+## 🔗 Motor de conexiones
 
----
+Cada par de estrellas recibe un puntaje según 4 criterios (parámetros en `frontend/config.js`):
 
-## ⚙️ Instalación
+1. Comparten **categoría**.
+2. Comparten **emoción**.
+3. Comparten al menos **2 palabras clave**.
+4. Están **cerca** físicamente en el lienzo.
 
+Si el puntaje supera un umbral mínimo, se genera una conexión visual (línea con degradado). Cada estrella tiene un máximo de conexiones simultáneas, para que la constelación no se vuelva un enredo visual ilegible.
+
+## ✨ Animación de nacimiento de una estrella
+
+Cuando el visitante envía su huella, la nueva estrella no aparece de golpe: pasa por una secuencia de 4 fases (`animacion-estrella.js`), pensada específicamente para el contexto de instalación:
+
+1. **Zoom in** — aparece pequeña y crece en el centro de la pantalla.
+2. **Corazón** — recorre la silueta de un corazón dejando una estela tipo cometa.
+3. **Vuelo** — viaja desde el centro hasta su posición final en el universo.
+4. **Aterrizaje** — destello + anillos de píxeles expansivos, y la estrella se asienta definitivamente.
+
+## 🚀 Puesta en marcha
+
+### Backend
+
+```bash
+cd backend
+cp .env.example .env      # completar GEMINI_API_KEY
 npm install
+npm start                 # levanta el servidor en http://localhost:4000
+```
 
----
+### Frontend
 
-## ▶️ Ejecución del proyecto
+El frontend es HTML/CSS/JS puro (ES Modules), no requiere build. Basta con servirlo con cualquier servidor estático, por ejemplo:
 
-npm run dev
+```bash
+cd frontend
+npx serve .
+# o, con la extensión Live Server de VSCode, abrir index.html
+```
 
-Servidor:
-http://localhost:4000
+Asegúrate de que `API_BASE` en `frontend/config.js` apunte a la URL real del backend (por defecto `http://localhost:4000/api`).
 
----
+## 👥 Equipo
 
-## 📡 Endpoints
+| Integrante | Rol |
+|---|---|
+| **Tamy** | Programación e interacción |
+| **Hadde** | Materiales y organización |
+| **Alex** | Concepto y experiencia del público |
+| **Mariel** | Investigación y diseño |
 
-POST /api/huellas
+## 🗺️ Planificación del trabajo
 
-Body:
-{
-  "texto": "mi familia me apoya mucho"
-}
-
----
-
-GET /api/huellas
-
----
-
-GET /api/constelacion
-
----
-
-## 🧠 Inteligencia artificial
-
-El sistema utiliza IA para analizar el texto del usuario y clasificarlo en una categoría emocional o temática.
-
-Esto define:
-- Color de la estrella
-- Tamaño (intensidad)
-- Representación en el universo
-
----
-
-## 🌠 Idea del proyecto
-
-Cada huella representa una experiencia humana.
-
-Esa experiencia se convierte en una estrella, y todas juntas forman una constelación de recuerdos, emociones y vínculos.
-
----
-
-## 🔐 Variables de entorno
-
-GEMINI_API_KEY=tu_api_key
-PORT=4000
-
----
-
-## 🔮 Futuras mejoras
-
-- Conexión entre estrellas similares
-- Animaciones avanzadas
-- Base de datos real
-- Interacción entre huellas
-
----
-
-## 👨‍💻 Autor
-
-Proyecto académico de arte digital, inteligencia artificial y visualización de datos.
+1. Diseño conceptual y visual.
+2. Diseño de estrellas físicas.
+3. Desarrollo de la visualización digital.
+4. Integración de la interacción del público.
+5. Pruebas y ajustes.
+6. Montaje y presentación.

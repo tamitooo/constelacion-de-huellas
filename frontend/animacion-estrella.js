@@ -1,9 +1,61 @@
-// animacion-estrella.js
-// Orquesta la animación completa de una nueva estrella:
-//   1. Aparece grande en el centro (zoom in pixel art)
-//   2. Dibuja un corazón con estela tipo cometa (se desvanece gradualmente)
-//   3. Vuela desde el centro hasta su posición final
-//   4. Aterriza con destello + anillos expansivos de píxeles
+/**
+ * ============================================================
+ *  animacion-estrella.js
+ * ============================================================
+ *  Orquesta la secuencia de animación completa que se ve cuando
+ *  el visitante envía una huella nueva y esta "nace" como estrella.
+ *  Toda la animación se dibuja sobre un <canvas> temporal, fijo y
+ *  a pantalla completa (z-index altísimo), que se crea al empezar
+ *  y se elimina al terminar — así no interfiere con el resto del
+ *  DOM ni con las estrellas ya existentes.
+ *
+ *  Las 4 fases de la animación (en orden):
+ *  ------------------------------------------------------------
+ *  1. ZOOM IN     — la estrella aparece en el centro de la
+ *                    pantalla, creciendo desde un punto diminuto
+ *                    (efecto pixel art).
+ *  2. CORAZÓN     — la estrella recorre la silueta de un corazón
+ *                    (curva paramétrica), dejando una estela tipo
+ *                    cometa que se va desvaneciendo.
+ *  3. VUELO       — tras una breve pausa "respirando" en el centro,
+ *                    la estrella vuela desde el centro hasta su
+ *                    posición final en el universo (destinoX/Y),
+ *                    encogiéndose progresivamente y dejando una
+ *                    estela más corta.
+ *  4. ATERRIZAJE  — destello radial blanco→color en el punto de
+ *                    llegada, más 3 anillos de píxeles expansivos
+ *                    desfasados en el tiempo, y finalmente la
+ *                    estrella "definitiva" se desvanece hacia su
+ *                    apariencia final.
+ *
+ *  Función exportada: animarNuevaEstrella({ color, destinoX,
+ *  destinoY, intensidad })
+ *  ------------------------------------------------------------
+ *  Es async y espera (await) cada fase en orden. Quien la llama
+ *  (estrellas.js) espera a que termine para recién entonces pintar
+ *  el elemento DOM definitivo de la estrella. Todo el cuerpo corre
+ *  dentro de un try/finally: si cualquier fase lanza una excepción,
+ *  el finally igual remueve el canvas temporal, evitando que quede
+ *  una capa fantasma cubriendo toda la pantalla para siempre.
+ *
+ *  Utilidades internas:
+ *  ------------------------------------------------------------
+ *  - easeOutCubic / easeInCubic / easeInOutCubic / lerp: funciones
+ *    de interpolación para que los movimientos no se sientan
+ *    lineales/robóticos.
+ *  - hexRGB(hex): convierte un color hex a {r,g,b}; si el valor no
+ *    es un hex válido, cae a dorado en vez de producir NaN
+ *    silenciosamente (lo que dejaría la estrella invisible sin
+ *    ningún aviso de qué pasó).
+ *  - patronEstrella / dibujarEstrella: generan y pintan la silueta
+ *    de estrella de 4 puntas en el canvas temporal.
+ *  - puntoCorazon(t): curva paramétrica del corazón (fase 2).
+ *  - animarFrame(duracion, callback): helper genérico que corre un
+ *    callback en cada requestAnimationFrame durante `duracion` ms,
+ *    pasándole t de 0 a 1 (además del timestamp), y resuelve su
+ *    promesa cuando termina.
+ * ============================================================
+ */
 
 const DURACION = {
   ZOOM_IN:      600,
@@ -48,7 +100,9 @@ function hexRGB(hex) {
   };
 }
 
-// Patrón pixel art de estrella de 4 puntas
+// Patrón pixel art de estrella de 4 puntas: cada punto tiene una
+// posición relativa (en unidades de pixSize) y una opacidad, para
+// que las puntas se vean con un degradado suave hacia los extremos.
 function patronEstrella(pixSize) {
   const pts = [];
   for (let i = -5; i <= 5; i++) {
@@ -63,10 +117,11 @@ function patronEstrella(pixSize) {
     pts.push({ x:  d*pixSize, y: -d*pixSize, op });
     pts.push({ x: -d*pixSize, y: -d*pixSize, op });
   }
-  pts.push({ x: 0, y: 0, op: 1 });
+  pts.push({ x: 0, y: 0, op: 1 }); // núcleo, siempre a máxima opacidad
   return pts;
 }
 
+/** Dibuja una estrella pixel art en (cx, cy) con escala/alpha dados. */
 function dibujarEstrella(ctx, cx, cy, color, escala, alpha, pixSize) {
   const { r, g, b } = hexRGB(color);
   const pts = patronEstrella(pixSize);
@@ -78,21 +133,26 @@ function dibujarEstrella(ctx, cx, cy, color, escala, alpha, pixSize) {
     // Núcleo del pixel
     ctx.fillStyle = `rgba(${r},${g},${b},${op * alpha})`;
     ctx.fillRect(px, py, sz, sz);
-    // Halo suave
+    // Halo suave (un rectángulo más grande y más transparente detrás)
     ctx.fillStyle = `rgba(${r},${g},${b},${op * alpha * 0.25})`;
     ctx.fillRect(px - sz, py - sz, sz * 3, sz * 3);
   });
   ctx.restore();
 }
 
-// Curva paramétrica del corazón, normalizada a [-1, 1]
+// Curva paramétrica del corazón, normalizada a [-1, 1] en ambos ejes.
 function puntoCorazon(t) {
   const x =  16 * Math.pow(Math.sin(t), 3);
   const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
   return { x: x / 17, y: y / 17 };
 }
 
-// Corre un callback con rAF durante `duracion` ms, t va de 0 a 1
+/**
+ * Corre `callback(t, timestamp)` en cada requestAnimationFrame
+ * durante `duracion` ms (t va de 0 a 1). Devuelve una promesa que
+ * se resuelve cuando t llega a 1 — así cada fase de la animación
+ * puede simplemente hacer `await animarFrame(...)`.
+ */
 function animarFrame(duracion, callback) {
   return new Promise(resolve => {
     const inicio = performance.now();
@@ -107,13 +167,14 @@ function animarFrame(duracion, callback) {
 }
 
 /**
+ * Ejecuta la animación completa de nacimiento de una estrella.
  * @param {string}  color      — hex del color de la estrella
  * @param {number}  destinoX   — coordenada X en pantalla (px)
  * @param {number}  destinoY   — coordenada Y en pantalla (px)
- * @param {number}  [intensidad=3] — 1-5
+ * @param {number}  [intensidad=3] — 1-5, afecta el tamaño del corazón
  */
 export async function animarNuevaEstrella({ color, destinoX, destinoY, intensidad = 3 }) {
-  // Canvas temporal fijo encima de todo
+  // Canvas temporal fijo encima de todo, dedicado solo a esta animación.
   const canvas = document.createElement('canvas');
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -150,7 +211,7 @@ export async function animarNuevaEstrella({ color, destinoX, destinoY, intensida
 
   // ── FASE 2: Corazón con estela de cometa ────────────────────────────────
   const estela = []; // { x, y, t_nacimiento }
-  const radio  = 60 + intensidad * 5;
+  const radio  = 60 + intensidad * 5; // el corazón crece con la intensidad emocional
 
   await animarFrame(DURACION.CORAZON, (t, ahora) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -168,7 +229,7 @@ export async function animarNuevaEstrella({ color, destinoX, destinoY, intensida
       const pt  = estela[i];
       const edad = ahora - pt.nacidoEn;
       if (edad > DURACION.ESTELA_VIDA) {
-        estela.splice(0, i + 1);
+        estela.splice(0, i + 1); // limpia los puntos ya "muertos"
         break;
       }
       const vida = 1 - edad / DURACION.ESTELA_VIDA;
@@ -219,7 +280,8 @@ export async function animarNuevaEstrella({ color, destinoX, destinoY, intensida
       ctx.fillRect(Math.round(pt.x - sz/2), Math.round(pt.y - sz/2), sz, sz);
     }
 
-    // Estrella se encoge mientras vuela
+    // Estrella se encoge mientras vuela (de grande/cercana a
+    // pequeña/lejana, simulando que se aleja hacia su lugar final).
     const escala = lerp(3.2, 0.8, ease);
     dibujarEstrella(ctx, x, y, color, escala, 1, pixSize);
   });
@@ -228,7 +290,8 @@ export async function animarNuevaEstrella({ color, destinoX, destinoY, intensida
   await animarFrame(DURACION.ATERRIZAJE, (t) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Flash radial blanco → color
+    // Flash radial blanco → color: sube rápido (15% del tiempo) y
+    // luego se apaga en el resto.
     const flashAlpha = t < 0.15
       ? easeOutCubic(t / 0.15)
       : easeInCubic(1 - (t - 0.15) / 0.85);
@@ -245,7 +308,9 @@ export async function animarNuevaEstrella({ color, destinoX, destinoY, intensida
       ctx.fill();
     }
 
-    // 3 anillos de píxeles expansivos desfasados
+    // 3 anillos de píxeles expansivos, desfasados en el tiempo para
+    // dar sensación de "ondas" sucesivas (como al tirar una piedra
+    // al agua).
     [0, 0.12, 0.26].forEach((desfase, idx) => {
       const tA = Math.max(0, Math.min((t - desfase) / 0.75, 1));
       if (tA <= 0) return;
@@ -265,7 +330,8 @@ export async function animarNuevaEstrella({ color, destinoX, destinoY, intensida
       }
     });
 
-    // La estrella definitiva aparece desde t=0.3
+    // La estrella definitiva aparece (fade-in) desde t=0.3, para que
+    // el destello y los anillos tengan protagonismo al principio.
     if (t > 0.3) {
       const alphaE = easeOutCubic((t - 0.3) / 0.7);
       dibujarEstrella(ctx, destinoX, destinoY, color, 1, alphaE, pixSize);
@@ -273,6 +339,8 @@ export async function animarNuevaEstrella({ color, destinoX, destinoY, intensida
   });
 
   } finally {
+    // Se ejecuta SIEMPRE, haya habido error o no: elimina el canvas
+    // temporal para no dejar una capa fantasma sobre la pantalla.
     canvas.remove();
   }
 }

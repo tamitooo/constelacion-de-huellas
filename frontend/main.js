@@ -1,4 +1,43 @@
-// main.js
+/**
+ * ============================================================
+ *  main.js
+ * ============================================================
+ *  Punto de entrada del frontend. No contiene lógica de negocio
+ *  propia: su trabajo es "cablear" todo — tomar referencias del
+ *  DOM, inyectarlas donde corresponda (ui.js), inicializar la
+ *  constelación cargando datos del backend, y arrancar el loop
+ *  de animación (cámara + conexiones) que corre en cada frame.
+ *
+ *  Responsabilidades:
+ *  ------------------------------------------------------------
+ *  1. Tomar todas las referencias DOM relevantes (formulario,
+ *     capas de proceso/resultado, controles de zoom, etc.).
+ *  2. Pasarle esas referencias a ui.js vía setElementos(), y a
+ *     estrellas.js vía setCapaEstrellas().
+ *  3. Manejar el contador de caracteres restantes del textarea.
+ *  4. Configurar el <canvas> de conexiones (ajustarCanvas), que
+ *     debe ser más grande que la ventana (con un margen) para
+ *     que las estrellas dispersas siempre queden dentro del área
+ *     dibujable, y se reajusta si la ventana cambia de tamaño.
+ *  5. init(): función principal de arranque —
+ *       - resetea la cámara,
+ *       - carga la constelación existente desde el backend
+ *         (con try/catch: si falla, la app igual arranca vacía
+ *         en vez de quedar completamente muda),
+ *       - registra los listeners de formulario, pan, zoom y
+ *         botones,
+ *       - arranca el loop de animación (animar()).
+ *  6. animar(): loop de requestAnimationFrame que:
+ *       - interpola suavemente la cámara real (_x, _y, _zoom)
+ *         hacia sus valores objetivo (targetX, targetY, targetZoom),
+ *       - aplica esa cámara como transform CSS al viewport de
+ *         estrellas,
+ *       - redibuja las líneas de conexión en el canvas fijo,
+ *         replicando manualmente la misma transformación (ver
+ *         conexiones.js para el porqué).
+ * ============================================================
+ */
+
 import { camera, configurarPan, configurarZoom, zoomIn, zoomOut, resetCamara } from './camera.js';
 import { getEstrellas, setCapaEstrellas, anadirEstrella } from './estrellas.js';
 import { recalcularConexiones, dibujarConexiones } from './conexiones.js';
@@ -31,6 +70,10 @@ const botonZoomMenos    = document.getElementById('boton-zoom-menos');
 const botonZoomReset    = document.getElementById('boton-zoom-reset');
 
 // ── Inyectar referencias en ui.js ───────────────
+// ui.js maneja todo el flujo de "enviar huella → mostrar proceso →
+// mostrar resultado → volver a explorar", pero no conoce el DOM
+// por sí mismo; se lo entregamos acá para mantener una sola fuente
+// de referencias DOM en toda la app.
 setElementos({
   // viewportRef: el elemento al que se le agrega/quita la clase
   // 'ocultar-constelacion'. Debe ser #universo-contenedor porque
@@ -68,6 +111,10 @@ inputHuella.addEventListener('input', actualizarContador);
 // ── Canvas de conexiones ─────────────────────────
 const ctx = capaConexiones.getContext('2d');
 
+/**
+ * Ajusta el tamaño real y visual del canvas de conexiones. Se
+ * ejecuta al iniciar y en cada resize de la ventana.
+ */
 function ajustarCanvas() {
   // El canvas cubre un área grande centrada en la ventana
   // para que las estrellas dispersas siempre queden dentro
@@ -98,6 +145,12 @@ function recalcularYActualizar() {
 }
 
 // ── Bucle de animación ───────────────────────────
+/**
+ * Loop principal, corre en cada requestAnimationFrame:
+ * 1. Interpola la cámara real hacia su objetivo (efecto "suave").
+ * 2. Aplica esa cámara como transform CSS al viewport de estrellas.
+ * 3. Redibuja las conexiones en el canvas fijo (fuera del viewport).
+ */
 function animar() {
   camera._x    += (camera.targetX    - camera._x)    * 0.08;
   camera._y    += (camera.targetY    - camera._y)    * 0.08;

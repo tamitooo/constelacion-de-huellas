@@ -1,4 +1,49 @@
-// estrellas.js
+/**
+ * ============================================================
+ *  estrellas.js
+ * ============================================================
+ *  Todo lo relacionado con crear, posicionar y pintar estrellas
+ *  (las representaciones visuales de cada huella) dentro del
+ *  universo. También coordina la animación especial que se ve
+ *  al enviar una huella NUEVA (delegada a animacion-estrella.js).
+ *
+ *  Funciones principales exportadas:
+ *  ------------------------------------------------------------
+ *  - setCapaEstrellas(el) / getEstrellas(): setter/getter simples
+ *    para el contenedor DOM y el array de estrellas en memoria.
+ *
+ *  - posicionPorCategoria(categoria, tamanoNueva): calcula dónde
+ *    debe aparecer una estrella nueva. Parte del offset de zona
+ *    de su categoría (ZONA_OFFSET en config.js) y prueba hasta
+ *    INTENTOS_POSICION posiciones aleatorias dentro de esa zona,
+ *    evitando colisionar con estrellas ya existentes. Si tras
+ *    muchos intentos no encuentra hueco (zona muy poblada), amplía
+ *    progresivamente el radio de búsqueda, y como último recurso
+ *    acepta una posición en el anillo más externo.
+ *
+ *  - crearEstrellaDOM(datos): construye el elemento DOM real de
+ *    una estrella (un contenedor con varios divs "pixel" pintados
+ *    encima, simulando pixel art con brillo vía box-shadow).
+ *
+ *  - crearEstrellaTemporal(...): estrella "genérica" que gira,
+ *    usada como indicador de carga mientras se espera la
+ *    clasificación de Gemini (antes de saber el color final).
+ *
+ *  - anadirEstrella(datosBackend, callback): agrega una estrella
+ *    SIN animación (usado al cargar la constelación existente al
+ *    iniciar la página — no tiene sentido animar decenas de
+ *    estrellas ya existentes una por una).
+ *
+ *  - anadirEstrellaAnimada(datosBackend, callback, camera): agrega
+ *    una estrella CON la animación completa de nacimiento (zoom →
+ *    corazón → vuelo → aterrizaje), usada cuando el usuario recién
+ *    envía su propia huella. La estrella se registra en el array
+ *    de inmediato (para que las conexiones ya la consideren) pero
+ *    el elemento DOM definitivo solo se pinta al terminar la
+ *    animación.
+ * ============================================================
+ */
+
 import { ZONA_OFFSET, DISPERSION } from './config.js';
 import { animarNuevaEstrella } from './animacion-estrella.js';
 
@@ -21,6 +66,14 @@ export function getEstrellas() { return estrellas; }
 // que se ve. El centro del viewport (VIEWPORT_CENTRO_X/Y) se usa en
 // cambio en conexiones.js, donde sí importa para replicar el
 // transform-origin de la cámara en cualquier estado de zoom/pan.
+
+/**
+ * Calcula una posición (x, y) para una estrella nueva dentro de la
+ * zona asociada a su categoría, evitando solaparse con estrellas
+ * ya existentes. Va ampliando el radio de búsqueda cada 3 intentos
+ * fallidos, y si aun así no encuentra hueco libre, acepta una
+ * posición en el anillo más externo (no bloquea nunca el flujo).
+ */
 export function posicionPorCategoria(categoria, tamanoNueva) {
   const offset = ZONA_OFFSET[categoria] || { dx: 0, dy: 0 };
   const cx = window.innerWidth  / 2;
@@ -117,6 +170,11 @@ function pintarPixelesEstrella(contenedor, color, intensidad) {
   return pixeles;
 }
 
+/**
+ * Construye el contenedor DOM definitivo de una estrella (posición,
+ * tamaño y píxeles pintados según su color/intensidad), lista para
+ * insertarse en #capa-estrellas.
+ */
 export function crearEstrellaDOM(datos) {
   const { x, y, color, tamano, categoria, emocion, intensidad } = datos;
 
@@ -136,6 +194,11 @@ export function crearEstrellaDOM(datos) {
   return contenedor;
 }
 
+/**
+ * Crea una estrella "provisional" que gira sobre sí misma, usada
+ * como indicador visual mientras se espera la respuesta de Gemini
+ * (todavía no se sabe la categoría/emoción/color definitivos).
+ */
 export function crearEstrellaTemporal(colorInicial = '#fce8a0', intensidadInicial = 3) {
   const contenedorGiro = document.createElement('div');
   contenedorGiro.style.cssText = `
@@ -165,8 +228,11 @@ export function crearEstrellaTemporal(colorInicial = '#fce8a0', intensidadInicia
 }
 
 
-// Nueva función: solo registra y pinta, sin animación.
-// Se usa al CARGAR la constelación al inicio.
+/**
+ * Registra y pinta una estrella SIN animación de nacimiento.
+ * Se usa al CARGAR la constelación existente al inicio de la app,
+ * donde animar cada estrella una por una no tendría sentido.
+ */
 export function anadirEstrella(datosBackend, callbackRecalcular) {
   const tamano = (datosBackend.intensidad || 3) * 10 + 6;
   const pos = posicionPorCategoria(datosBackend.categoria, tamano);
@@ -191,8 +257,12 @@ export function anadirEstrella(datosBackend, callbackRecalcular) {
   return estrella;
 }
 
-// Nueva función: registra la posición, ESPERA la animación, luego pinta el DOM.
-// Se usa al enviar una huella nueva desde el formulario.
+/**
+ * Registra la posición de una estrella nueva, ESPERA a que termine
+ * la animación de nacimiento (zoom → corazón → vuelo → aterrizaje)
+ * y solo entonces pinta el elemento DOM definitivo. Se usa al
+ * enviar una huella nueva desde el formulario.
+ */
 export async function anadirEstrellaAnimada(datosBackend, callbackRecalcular, camera) {
   const tamano = (datosBackend.intensidad || 3) * 10 + 6;
   const pos = posicionPorCategoria(datosBackend.categoria, tamano);

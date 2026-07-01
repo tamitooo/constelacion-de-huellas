@@ -1,5 +1,20 @@
 /* ============================================================
    style.css — Constelación de Huellas
+   ============================================================
+   Organización del archivo (de arriba a abajo):
+   1. Reset básico + estilos globales del body.
+   2. UNIVERSO: contenedor, viewport (con pan/zoom) y fondo espacial.
+   3. CANVAS DE CONEXIONES: líneas entre estrellas relacionadas.
+   4. ESTRELLA NACIENTE: indicador giratorio mientras se procesa
+      una huella nueva.
+   5. FORMULARIO: pantalla inicial donde el visitante escribe su
+      huella.
+   6. PROCESO: pantalla de "el universo está leyendo tu recuerdo",
+      con el resultado (categoría/emoción) al final.
+   7. BOTONES flotantes de navegación (volver) y zoom.
+   8. GUÍA de exploración (texto de ayuda al pie).
+   9. ESTRELLAS DOM: apariencia pixel art con pulso de brillo.
+   10. RESPONSIVE: ajustes para pantallas chicas.
    ============================================================ */
 
 * {
@@ -12,13 +27,15 @@ body {
   background: #0a0a12;
   color: #ffffff;
   font-family: 'Anonymous Pro', monospace;
-  overflow: hidden;
+  overflow: hidden; /* la instalación no tiene scroll de página, todo vive dentro de capas fijas */
   height: 100vh;
   width: 100vw;
-  user-select: none;
+  user-select: none; /* evita que arrastrar para explorar seleccione texto por accidente */
 }
 
 /* ---------- UNIVERSO ---------- */
+/* Contenedor fijo a pantalla completa que aloja todo el "cielo"
+   de estrellas: el viewport transformable y el fondo espacial. */
 #universo-contenedor {
   position: fixed;
   top: 0;
@@ -28,7 +45,11 @@ body {
   overflow: hidden;
   z-index: 0;
 }
-/* ── VIEWPORT GRANDE para muchas estrellas ── */
+/* ── VIEWPORT GRANDE para muchas estrellas ──
+   Lienzo de 4000x4000px sobre el que se posicionan las estrellas.
+   camera.js + main.js le aplican un transform (translate + scale)
+   para simular pan y zoom sin tener que recalcular la posición de
+   cada estrella individualmente. */
 #universo-viewport {
   position: absolute;
   top: 0;
@@ -88,6 +109,7 @@ body {
   z-index: 1;
 }
 
+/* Contenedor donde estrellas.js inyecta cada .estrella-dom */
 #capa-estrellas {
   position: absolute;
   top: 0;
@@ -98,6 +120,8 @@ body {
 }
 
 /* ---------- ESTRELLA NACIENTE ---------- */
+/* Indicador visual que gira mientras se espera la clasificación
+   de Gemini (ver crearEstrellaTemporal en estrellas.js / ui.js). */
 
 #estrella-naciente {
   width: 120px;
@@ -135,12 +159,15 @@ body {
   0%   { opacity: 0.4; }
   100% { opacity: 0.9; }
 }
+/* Usado por el spinner de crearEstrellaTemporal() en estrellas.js */
 @keyframes spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
 
 /* ---------- FORMULARIO ---------- */
+/* Pantalla inicial: pregunta poética + textarea + botón enviar.
+   Se oculta (clase .oculto) cuando arranca el flujo de envío. */
 #capa-formulario {
   position: fixed;
   top: 50%;
@@ -231,6 +258,9 @@ body {
 #btn-enviar:disabled { opacity: 0.4; pointer-events: none; }
 
 /* ---------- PROCESO ---------- */
+/* Pantalla intermedia mostrada mientras se envía/clasifica la
+   huella, y luego el resultado (categoría + emoción) antes de
+   volver a la exploración libre. */
 #capa-proceso {
   position: fixed;
   inset: 0;
@@ -391,6 +421,8 @@ body {
 }
 
 /* ---------- GUÍA ---------- */
+/* Texto de ayuda al pie ("arrastra para explorar..."), se
+   desvanece sola pasado TIEMPOS.OCULTAR_GUIA (config.js). */
 #guia-exploracion {
   position: fixed;
   bottom: 30px;
@@ -409,6 +441,9 @@ body {
 #guia-exploracion.oculto { opacity: 0; }
 
 /* ---------- ESTRELLAS DOM (pixel art con brillo) ---------- */
+/* Contenedor base de cada estrella ya definitiva (ver
+   crearEstrellaDOM en estrellas.js). Pulsa suavemente en loop
+   para dar sensación de "vida" al universo. */
 .estrella-dom {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -429,7 +464,8 @@ body {
   100% { transform: translate(-50%, -50%) scale(0.90); opacity: 0.70; }
 }
 
-/* Ocultar estrellas y conexiones durante la carga */
+/* Ocultar estrellas y conexiones durante la carga inicial, para
+   que no aparezcan "de golpe" antes de que todo esté listo. */
 #universo-contenedor.ocultar-constelacion #capa-estrellas,
 #universo-contenedor.ocultar-constelacion #capa-conexiones {
   opacity: 0;
